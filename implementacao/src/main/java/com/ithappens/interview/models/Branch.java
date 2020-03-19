@@ -10,16 +10,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
 
-@Data
 @Entity
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-public class Client {
+@NoArgsConstructor
+public class Branch {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Size(min=4, max=40,message="Name should be have at least 4 and at most 40 characters")
-    private String nome;
+    private String name;
+
+
 
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Size(min=4, max=40,message="Name should be have at least 4 and at most 40 characters")
