@@ -1,6 +1,6 @@
 package com.ithappens.interview.models;
 
-import com.ithappens.interview.enums.Status;
+import com.ithappens.interview.enums.RequestType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,6 @@ public class Request {
     private String note;
 
     @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    private RequestType type;
 
 }
