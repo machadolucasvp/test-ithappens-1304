@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,19 +22,19 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(min = 4, max = 40, message = "Name should be have at least 4 and at most 40 characters")
+    @Size(min = 4, max = 40, message = "Nome deve possuir no mínimo 4 e no máximo 40 caracteres")
     private String nome;
 
     @Email
     @Column(unique=true)
-    @NotEmpty(message = "Email should not be empty")
+    @NotEmpty(message = "Email não deve ser vazio")
     private String email;
 
-    @NotEmpty(message = "Password should not be empty")
+    @NotEmpty(message = "Senha não deve ser vazia")
     private String password;
 
-    private boolean active;
+    private boolean ativo;
 
-    private String pictureUrl;
+    private String fotoUrl;
 
 }

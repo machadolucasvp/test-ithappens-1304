@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestItem implements Serializable {
+public class ItemPedido implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,12 +26,12 @@ public class RequestItem implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private Status status;
 
-    private Double unitCost;
+    private Double custoUnitario;
 
-    private Integer amount;
+    private Integer quantidade;
 
     @ManyToOne
-    @JsonIgnoreProperties("requestItems")
-    private Request request;
+    @JsonIgnoreProperties("itemsPedido")
+    private Pedido pedido;
 
 }

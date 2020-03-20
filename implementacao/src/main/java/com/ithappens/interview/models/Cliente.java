@@ -11,11 +11,11 @@ import javax.persistence.Id;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-@Entity
 @Data
-@AllArgsConstructor
+@Entity
 @NoArgsConstructor
-public class Branch implements Serializable {
+@AllArgsConstructor
+public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class Branch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Size(min = 4, max = 40, message = "Name should be have at least 4 and at most 40 characters")
-    private String name;
+    @Size(min = 4, max = 40, message = "Nome deve possuir no mínimo 4 e no máximo 40 caracteres")
+    private String nome;
 
 }

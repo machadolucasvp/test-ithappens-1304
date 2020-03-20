@@ -1,23 +1,18 @@
 package com.ithappens.interview.models;
 
-import com.ithappens.interview.enums.RequestType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Request implements Serializable {
+public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,12 +20,6 @@ public class Request implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.ORDINAL)
-    private RequestType type;
-
-    private String note;
-
-    @OneToMany(mappedBy = "request")
-    private List<RequestItem> requestItems = new ArrayList<>();
+    private Double custo;
 
 }
