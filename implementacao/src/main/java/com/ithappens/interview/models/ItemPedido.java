@@ -31,7 +31,6 @@ public class ItemPedido implements Serializable {
     private Integer quantidade;
 
     @ManyToOne
-    @JsonIgnoreProperties("itemsPedido")
     private Pedido pedido;
 
 }

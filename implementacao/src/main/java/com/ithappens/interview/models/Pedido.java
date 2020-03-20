@@ -1,15 +1,15 @@
 package com.ithappens.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ithappens.interview.enums.Tipo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -31,6 +31,8 @@ public class Pedido implements Serializable {
     private String nota;
 
     @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itemsPedido = new ArrayList<>();
+    @JsonIgnoreProperties("pedido")
+    @EqualsAndHashCode.Exclude
+    private Set<ItemPedido> itemsPedido = new HashSet<>();
 
 }
