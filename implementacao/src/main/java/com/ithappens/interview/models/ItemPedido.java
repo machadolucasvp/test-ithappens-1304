@@ -33,4 +33,8 @@ public class ItemPedido implements Serializable {
     @ManyToOne
     private Pedido pedido;
 
+    @ManyToOne
+    @JsonIgnoreProperties("itemPedido")
+    private Produto produto;
+
 }
