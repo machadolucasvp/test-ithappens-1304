@@ -1,17 +1,17 @@
 package com.ithappens.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ithappens.interview.enums.Status;
-import com.ithappens.interview.models.Product;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,5 +29,9 @@ public class RequestItem implements Serializable {
     private Double unitCost;
 
     private Integer amount;
+
+    @ManyToOne
+    @JsonIgnoreProperties("requestItems")
+    private Request request;
 
 }

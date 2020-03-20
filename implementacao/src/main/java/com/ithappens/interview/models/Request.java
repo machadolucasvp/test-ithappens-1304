@@ -2,14 +2,19 @@ package com.ithappens.interview.models;
 
 import com.ithappens.interview.enums.RequestType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Request implements Serializable {
@@ -24,5 +29,8 @@ public class Request implements Serializable {
     private RequestType type;
 
     private String note;
+
+    @OneToMany(mappedBy = "request")
+    private List<RequestItem> requestItems = new ArrayList<>();
 
 }
