@@ -6,20 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Request {
+public class Request implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String note;
 
     @Enumerated(EnumType.ORDINAL)
     private RequestType type;
+
+    private String note;
 
 }
