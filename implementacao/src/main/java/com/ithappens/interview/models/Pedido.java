@@ -6,9 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -34,5 +32,9 @@ public class Pedido implements Serializable {
     @JsonIgnoreProperties("pedido")
     @EqualsAndHashCode.Exclude
     private Set<ItemPedido> itemsPedido = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties("pedidos")
+    private Usuario usuario;
 
 }

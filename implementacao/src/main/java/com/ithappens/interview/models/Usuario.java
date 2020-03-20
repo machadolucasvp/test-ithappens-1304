@@ -1,17 +1,19 @@
 package com.ithappens.interview.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements Serializable {
@@ -33,8 +35,14 @@ public class Usuario implements Serializable {
     @NotEmpty(message = "Senha não deve ser vazia")
     private String password;
 
+
     private boolean ativo;
 
     private String fotoUrl;
+
+    @OneToMany(mappedBy = "usuario")
+    @EqualsAndHashCode.Exclude
+    @JsonIgnoreProperties("usuario")
+    private Set<Pedido> pedidos = new HashSet<>();
 
 }
