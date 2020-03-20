@@ -1,18 +1,16 @@
 package com.ithappens.interview.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Filial implements Serializable {
@@ -25,5 +23,13 @@ public class Filial implements Serializable {
 
     @Size(min = 4, max = 40, message = "Nome deve possuir no mínimo 4 e no máximo 40 caracteres")
     private String nome;
+
+    @ManyToMany(mappedBy = "filial")
+    @EqualsAndHashCode.Exclude
+    private Set<Produto> produtos = new HashSet<>();
+
+    public boolean addProdutos(Produto produto){
+        return this.produtos.add(produto);
+    }
 
 }
