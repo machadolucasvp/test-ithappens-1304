@@ -52,6 +52,26 @@ public class FilialService {
 
     }
 
+    public void addProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
+        try {
+            if (produto.getId() != null) {
+                Optional<Produto> produtoExistente = produtoRepository.findById(produto.getId());
+                if (produtoExistente.isPresent()) {
+                    produto = produtoExistente.get();
+                }
+            }
+            FilialProduto filialProduto = FilialProduto.builder()
+                    .produto(produto).filial(filial).quantidadeEstoque(quantidadeProdutos).build();
+
+            filialRepository.save(filial);
+            produtoRepository.save(produto);
+            filialProdutoRepository.save(filialProduto);
+
+        } catch (DataAccessException exception) {
+            throw new DataIntegrityViolationException("Não foi possível persistir o objeto para o banco de dados");
+        }
+    }
+
     public List<Filial> findAll() {
         return filialRepository.findAll();
     }
