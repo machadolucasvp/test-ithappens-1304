@@ -31,6 +31,14 @@ public class FilialProduto implements Serializable {
     @MapsId("produto_id")
     private Produto produto;
 
-    private Integer quantidadeProdutos;
+    private Integer quantidadeEstoque;
+
+    public void addEstoque(Integer quantidade){
+        this.quantidadeEstoque += quantidade;
+    }
+
+    public void removeEstoque(Integer quantidade){
+        this.quantidadeEstoque -= quantidade;
+    }
 
 }
