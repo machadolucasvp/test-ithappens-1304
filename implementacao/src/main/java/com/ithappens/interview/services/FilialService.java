@@ -53,13 +53,26 @@ public class FilialService {
     }
 
     public void addProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
+        if (quantidadeProdutos <= 0) return;
         try {
             if (produto.getId() != null) {
                 Optional<Produto> produtoExistente = produtoRepository.findById(produto.getId());
+
                 if (produtoExistente.isPresent()) {
                     produto = produtoExistente.get();
+                    Optional<FilialProduto> filialProduto =
+                            filialProdutoRepository.findByFilialIdAndProdutoId(filial.getId(), produto.getId());
+                    if (filialProduto.isPresent()) {
+                        filialProduto.get().addEstoque(quantidadeProdutos);
+                        filialProdutoRepository.save(filialProduto.get());
+                        return;
+                    } else {
+                        throw new ObjectNotFoundException(produto.getId(), FilialProduto.class.getName());
+                    }
                 }
+
             }
+            produto.setId(null);
             FilialProduto filialProduto = FilialProduto.builder()
                     .produto(produto).filial(filial).quantidadeEstoque(quantidadeProdutos).build();
 
