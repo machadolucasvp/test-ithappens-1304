@@ -31,16 +31,9 @@ public class Produto implements Serializable {
     @EqualsAndHashCode.Exclude
     private Set<ItemPedido> itemPedido = new HashSet<>();
 
-    @JsonIgnoreProperties("produtos")
-    @ManyToMany
+    @OneToMany(mappedBy = "produto")
     @EqualsAndHashCode.Exclude
-    @JoinTable(name="produto_filial",
-            joinColumns = {@JoinColumn(name="fk_produto")},
-            inverseJoinColumns = {@JoinColumn(name="fk_filial") })
-    private Set<Filial> filial = new HashSet<>(0);
-
-    public boolean addFilial(Filial filial){
-        return this.filial.add(filial);
-    }
+    @JsonIgnoreProperties({"produto", "filial", "produto_id"})
+    private Set<FilialProduto> filiais = new HashSet<>(0);
 
 }

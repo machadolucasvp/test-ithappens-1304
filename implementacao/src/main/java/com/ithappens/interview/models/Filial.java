@@ -24,12 +24,8 @@ public class Filial implements Serializable {
     @Size(min = 4, max = 40, message = "Nome deve possuir no mínimo 4 e no máximo 40 caracteres")
     private String nome;
 
-    @ManyToMany(mappedBy = "filial")
+    @OneToMany(mappedBy = "filial")
     @EqualsAndHashCode.Exclude
-    private Set<Produto> produtos = new HashSet<>();
-
-    public boolean addProdutos(Produto produto){
-        return this.produtos.add(produto);
-    }
+    private Set<FilialProduto> produtos = new HashSet<>(0);
 
 }
