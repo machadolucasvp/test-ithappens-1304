@@ -22,9 +22,27 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
+    @Autowired
+    private FilialService filialService;
+
     @GetMapping
     public List<Pedido> getAll() {
         return pedidoService.findAll();
+    }
+
+    @PostMapping("/filial/{filialId}/pedido")
+    public ResponseEntity<Pedido> postPedido(@RequestParam(value = "tipo", defaultValue = "entrada") String tipo,
+                                             @RequestBody Pedido pedido,
+                                             @PathVariable Integer filialId) {
+        if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
+
+            pedidoService.addPedidoEntrada(filialId, pedido);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+
+        } else if (tipo.equals(Tipo.getValueOf(Tipo.SAIDA))) {
+
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
 }
