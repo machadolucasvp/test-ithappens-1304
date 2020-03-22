@@ -44,12 +44,30 @@ public class FilialService {
 
                     return new ProdutoDTO(oldProd.getProduto().getId(), oldProd.getProduto().getNome(),
                             oldProd.getProduto().getDescricao(), oldProd.getProduto().getCodigoDeBarras(),
-                            oldProd.getProduto().getSequencial(), oldProd.getProduto().getCusto(), filialProduto.get().getQuantidadeEstoque());
+                            oldProd.getProduto().getSequencial(), oldProd.getProduto().getCusto(), filialProduto.get()
+                            .getQuantidadeEstoque());
                 }
         ).collect(Collectors.toSet());
 
         return FilialDTO.builder().id(filial.getId()).nome(filial.getNome()).produtos(produtos).build();
 
+    }
+
+    public void removeProduto(Produto produto, Filial filial, Integer quantidadeProdutos){
+        if (quantidadeProdutos <= 0 ) throw new DataIntegrityViolationException("Não foi possível " +
+                "realizar a retirada de produtos do estoque, quantidade invalída");
+        try{
+            Optional<FilialProduto> filialProduto =
+                    filialProdutoRepository.findByFilialIdAndProdutoId(filial.getId(), produto.getId());
+            if(filialProduto.isPresent()){
+                filialProduto.get().removeEstoque(quantidadeProdutos);
+                filialProdutoRepository.save(filialProduto.get());
+            }else {
+                throw new ObjectNotFoundException(produto.getId(), FilialProduto.class.getName());
+            }
+        }catch (DataAccessException exception) {
+            throw new DataIntegrityViolationException("Não foi possível realizar a retirada do produto no estoque");
+        }
     }
 
     public void addProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
@@ -81,7 +99,7 @@ public class FilialService {
             filialProdutoRepository.save(filialProduto);
 
         } catch (DataAccessException exception) {
-            throw new DataIntegrityViolationException("Não foi possível persistir o objeto para o banco de dados");
+            throw new DataIntegrityViolationException("Não foi possível persistir o objeto para o estoque");
         }
     }
 
