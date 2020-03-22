@@ -29,7 +29,7 @@ public class Pedido implements Serializable {
     private String nota;
 
     @OneToMany(mappedBy = "pedido")
-    @JsonIgnoreProperties("pedido")
+    @JsonIgnoreProperties(value="pedido", allowSetters = true)
     @EqualsAndHashCode.Exclude
     private Set<ItemPedido> itemsPedido = new HashSet<>();
 

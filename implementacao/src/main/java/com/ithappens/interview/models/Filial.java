@@ -1,5 +1,6 @@
 package com.ithappens.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;

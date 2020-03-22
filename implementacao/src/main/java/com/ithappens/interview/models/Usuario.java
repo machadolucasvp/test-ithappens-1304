@@ -35,8 +35,8 @@ public class Usuario implements Serializable {
     @NotEmpty(message = "Senha não deve ser vazia")
     private String password;
 
-
-    private boolean ativo;
+    @Builder.Default
+    private boolean ativo = true;
 
     private String fotoUrl;
 

@@ -25,6 +25,12 @@ public class Produto implements Serializable {
 
     private String nome;
 
+    private String descricao;
+
+    private String codigoDeBarras;
+
+    private Long sequencial;
+
     private Double custo;
 
     @OneToMany(mappedBy = "produto")

@@ -24,7 +24,8 @@ public class ItemPedido implements Serializable {
     private Integer id;
 
     @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    @Builder.Default
+    private Status status = Status.ATIVO;
 
     private Double custoUnitario;
 

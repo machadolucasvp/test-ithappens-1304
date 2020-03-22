@@ -53,19 +53,26 @@ public class FilialService {
 
     }
 
-    public void removeProduto(Produto produto, Filial filial, Integer quantidadeProdutos){
-        if (quantidadeProdutos <= 0 ) throw new DataIntegrityViolationException("Não foi possível " +
-                "realizar a retirada de produtos do estoque, quantidade invalída");
-        try{
+    public void removeProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
+        if (quantidadeProdutos <= 0) throw new DataIntegrityViolationException("Não foi possível " +
+                "realizar a operação de saída de produtos do estoque, quantidade invalída ou" + "estoque vazio");
+        try {
             Optional<FilialProduto> filialProduto =
                     filialProdutoRepository.findByFilialIdAndProdutoId(filial.getId(), produto.getId());
-            if(filialProduto.isPresent()){
+
+            if (filialProduto.isPresent()) {
+                int variacaoEstoque = filialProduto.get().getQuantidadeEstoque() - quantidadeProdutos;
+
+                if (variacaoEstoque < 0) throw new DataIntegrityViolationException("Não foi possível realizar" +
+                        "a operação de saída de produtos do estoque, quantidade desejada é menor que a disponível");
+
                 filialProduto.get().removeEstoque(quantidadeProdutos);
                 filialProdutoRepository.save(filialProduto.get());
-            }else {
+            } else {
                 throw new ObjectNotFoundException(produto.getId(), FilialProduto.class.getName());
             }
-        }catch (DataAccessException exception) {
+
+        } catch (DataAccessException exception) {
             throw new DataIntegrityViolationException("Não foi possível realizar a retirada do produto no estoque");
         }
     }
