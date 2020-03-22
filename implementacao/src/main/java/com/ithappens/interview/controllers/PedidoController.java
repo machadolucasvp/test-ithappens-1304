@@ -40,6 +40,8 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
         } else if (tipo.equals(Tipo.getValueOf(Tipo.SAIDA))) {
+            pedidoService.addPedidoSaida(filialId, pedido);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

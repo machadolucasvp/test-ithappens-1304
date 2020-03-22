@@ -33,6 +33,27 @@ public class PedidoService {
         return pedidoRepository.findAll();
     }
 
+    public void addPedidoSaida(Integer filialId, Pedido pedidoDTO){
+        Filial filial = filialService.findById(filialId);
+        Usuario usuario = usuarioService.findById(pedidoDTO.getUsuario().getId());
+        Pedido pedido = Pedido.builder().nota(pedidoDTO.getNota())
+                .usuario(usuario).tipo(Tipo.SAIDA)
+                .build();
+
+        Set<ItemPedido> itemPedidos = pedidoDTO.getItemsPedido().stream().map(
+                item -> {
+                    item.setPedido(pedido);
+                    filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
+                    return item;
+                }
+        ).collect(Collectors.toSet());
+        pedido.setItemsPedido(itemPedidos);
+
+        pedidoRepository.save(pedido);
+        itemPedidoRepository.saveAll(itemPedidos);
+
+    }
+
     public void addPedidoEntrada(Integer filialId, Pedido pedidoDTO) {
         Filial filial = filialService.findById(filialId);
         Usuario usuario = usuarioService.findById(pedidoDTO.getUsuario().getId());
