@@ -50,7 +50,7 @@ public class PedidoService {
                         filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
                         return item;
                     } else if (tipo.equals(Tipo.ENTRADA)) {
-                        filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
+                        filialService.addProduto(item.getProduto(), filial, item.getQuantidade());
                         return item;
 
                     } else {
@@ -59,7 +59,7 @@ public class PedidoService {
                 }
         ).collect(Collectors.toSet());
 
-        pedido.setCustoTotal(pedido.calculaCustoTotal());
+        pedido.setCustoTotal(pedidoDTO.calculaCustoTotal());
         pedido.setItemsPedido(itemPedidos);
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);

@@ -43,7 +43,7 @@ public class Pedido implements Serializable {
 
     public double calculaCustoTotal() {
         return this.getItemsPedido().stream()
-                .filter(item -> item.getStatus() != Status.CANCELADO)
+                .filter(item -> !item.getStatus().equals(Status.CANCELADO))
                 .mapToDouble(item -> item.getSubTotal())
                 .sum();
     }
