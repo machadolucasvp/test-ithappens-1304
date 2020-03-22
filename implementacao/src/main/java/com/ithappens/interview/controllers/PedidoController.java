@@ -22,9 +22,6 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @Autowired
-    private FilialService filialService;
-
     @GetMapping
     public List<Pedido> getAll() {
         return pedidoService.findAll();
@@ -36,11 +33,12 @@ public class PedidoController {
                                              @PathVariable Integer filialId) {
         if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
 
-            pedidoService.addPedidoEntrada(filialId, pedido);
+            pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
         } else if (tipo.equals(Tipo.getValueOf(Tipo.SAIDA))) {
-            pedidoService.addPedidoSaida(filialId, pedido);
+
+            pedidoService.addPedido(filialId, pedido, Tipo.SAIDA);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
         }

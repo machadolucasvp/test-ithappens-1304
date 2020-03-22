@@ -7,6 +7,7 @@ import com.ithappens.interview.models.Pedido;
 import com.ithappens.interview.models.Usuario;
 import com.ithappens.interview.repositories.ItemPedidoRepository;
 import com.ithappens.interview.repositories.PedidoRepository;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 @Service
 public class PedidoService {
@@ -29,47 +31,33 @@ public class PedidoService {
     @Autowired
     private FilialService filialService;
 
-    public List<Pedido> findAll(){
+    public List<Pedido> findAll() {
         return pedidoRepository.findAll();
     }
 
-    public void addPedidoSaida(Integer filialId, Pedido pedidoDTO){
+    public void addPedido(Integer filialId, Pedido pedidoDTO, Tipo tipo) {
         Filial filial = filialService.findById(filialId);
         Usuario usuario = usuarioService.findById(pedidoDTO.getUsuario().getId());
         Pedido pedido = Pedido.builder().nota(pedidoDTO.getNota())
-                .usuario(usuario).tipo(Tipo.SAIDA)
+                .usuario(usuario).tipo(tipo)
                 .build();
 
         Set<ItemPedido> itemPedidos = pedidoDTO.getItemsPedido().stream().map(
                 item -> {
                     item.setPedido(pedido);
-                    filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
-                    return item;
+                    if (tipo.equals(Tipo.SAIDA)) {
+                        filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
+                        return item;
+                    } else if (tipo.equals(Tipo.ENTRADA)) {
+                        filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
+                        return item;
+                    } else {
+                        throw new IllegalArgumentException("Não foi possível identificar o tipo do pedido");
+                    }
                 }
         ).collect(Collectors.toSet());
+
         pedido.setItemsPedido(itemPedidos);
-
-        pedidoRepository.save(pedido);
-        itemPedidoRepository.saveAll(itemPedidos);
-
-    }
-
-    public void addPedidoEntrada(Integer filialId, Pedido pedidoDTO) {
-        Filial filial = filialService.findById(filialId);
-        Usuario usuario = usuarioService.findById(pedidoDTO.getUsuario().getId());
-        Pedido pedido = Pedido.builder().nota(pedidoDTO.getNota())
-                .usuario(usuario).tipo(Tipo.ENTRADA)
-                .build();
-
-        Set<ItemPedido> itemPedidos = pedidoDTO.getItemsPedido().stream().map(
-                item -> {
-                    item.setPedido(pedido);
-                    filialService.addProduto(item.getProduto(), filial, item.getQuantidade());
-                    return item;
-                }
-        ).collect(Collectors.toSet());
-        pedido.setItemsPedido(itemPedidos);
-
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
     }
