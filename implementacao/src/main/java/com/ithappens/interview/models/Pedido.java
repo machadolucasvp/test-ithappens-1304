@@ -1,6 +1,7 @@
 package com.ithappens.interview.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ithappens.interview.enums.Status;
 import com.ithappens.interview.enums.Tipo;
 import lombok.*;
 
@@ -28,13 +29,24 @@ public class Pedido implements Serializable {
 
     private String nota;
 
+    private Double custoTotal;
+
     @OneToMany(mappedBy = "pedido")
-    @JsonIgnoreProperties(value="pedido", allowSetters = true)
+    @JsonIgnoreProperties(value = "pedido", allowSetters = true)
     @EqualsAndHashCode.Exclude
+    @Builder.Default
     private Set<ItemPedido> itemsPedido = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
+
+    public double calculaCustoTotal() {
+        return this.getItemsPedido().stream()
+                .filter(item -> item.getStatus() != Status.CANCELADO)
+                .mapToDouble(item -> item.getSubTotal())
+                .sum();
+    }
+
 
 }

@@ -44,6 +44,7 @@ public class PedidoService {
 
         Set<ItemPedido> itemPedidos = pedidoDTO.getItemsPedido().stream().map(
                 item -> {
+                    item.setSubTotal(item.calculaSubTotal());
                     item.setPedido(pedido);
                     if (tipo.equals(Tipo.SAIDA)) {
                         filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
@@ -51,12 +52,14 @@ public class PedidoService {
                     } else if (tipo.equals(Tipo.ENTRADA)) {
                         filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
                         return item;
+
                     } else {
                         throw new IllegalArgumentException("Não foi possível identificar o tipo do pedido");
                     }
                 }
         ).collect(Collectors.toSet());
 
+        pedido.setCustoTotal(pedido.calculaCustoTotal());
         pedido.setItemsPedido(itemPedidos);
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);

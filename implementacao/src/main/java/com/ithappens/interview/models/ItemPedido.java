@@ -29,6 +29,8 @@ public class ItemPedido implements Serializable {
 
     private Double custoUnitario;
 
+    private Double subTotal;
+
     private Integer quantidade;
 
     @ManyToOne
@@ -37,5 +39,9 @@ public class ItemPedido implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("itemPedido")
     private Produto produto;
+
+    public double calculaSubTotal() {
+        return this.quantidade * this.custoUnitario;
+    }
 
 }
