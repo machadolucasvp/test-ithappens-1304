@@ -27,10 +27,10 @@ public class PedidoController {
         return pedidoService.findAll();
     }
 
-    @PostMapping("/filial/{filialId}/pedido")
+    @PostMapping
     public ResponseEntity<Pedido> postPedido(@RequestParam(value = "tipo", defaultValue = "entrada") String tipo,
-                                             @RequestBody Pedido pedido,
-                                             @PathVariable Integer filialId) {
+                                             @RequestParam(value = "filial") Integer filialId,
+                                             @RequestBody Pedido pedido) {
         if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
 
             pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
@@ -43,6 +43,18 @@ public class PedidoController {
 
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    @PutMapping("/{pedidoId}/item")
+    public ResponseEntity<Pedido> updateItemPedidoStatus(@PathVariable Integer pedidoId,
+                                                         @RequestParam(value = "id") Integer itemId,
+                                                         @RequestParam(value = "status", defaultValue = "CANCELADO") String status) {
+        boolean isPresent = pedidoService.updateItemPedidoStatus(pedidoId, itemId, status);
+        if (isPresent) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
 }
