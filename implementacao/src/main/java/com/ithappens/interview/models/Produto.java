@@ -1,5 +1,6 @@
 package com.ithappens.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.ManyToAny;
@@ -39,7 +40,8 @@ public class Produto implements Serializable {
 
     @OneToMany(mappedBy = "produto")
     @EqualsAndHashCode.Exclude
-    @JsonIgnoreProperties({"produto", "filial", "produto_id"})
+    @JsonIgnore
+    @Builder.Default
     private Set<FilialProduto> filiais = new HashSet<>(0);
 
 }

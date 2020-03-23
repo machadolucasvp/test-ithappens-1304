@@ -1,6 +1,7 @@
 package com.ithappens.interview.services;
 
 import com.ithappens.interview.dtos.FilialDTO;
+import com.ithappens.interview.dtos.FilialPedidoDTO;
 import com.ithappens.interview.dtos.FilialProdutoDTO;
 import com.ithappens.interview.dtos.ProdutoDTO;
 import com.ithappens.interview.models.*;
@@ -109,6 +110,12 @@ public class FilialService {
         } catch (DataAccessException exception) {
             throw new DataIntegrityViolationException("Não foi possível persistir o objeto para o estoque");
         }
+    }
+
+    public FilialPedidoDTO filialPedidoAsDTO(Filial filial){
+        return FilialPedidoDTO.builder().id(filial.getId())
+                .nome(filial.getNome())
+                .build();
     }
 
     public List<Filial> findAll() {
