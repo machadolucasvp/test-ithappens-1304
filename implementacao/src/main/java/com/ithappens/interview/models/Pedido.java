@@ -41,6 +41,11 @@ public class Pedido implements Serializable {
     @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
+    @OneToOne
+    @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("pedidoCliente")
+    private Cliente cliente;
+
     public double calculaCustoTotal() {
         return this.getItemsPedido().stream()
                 .filter(item -> !item.getStatus().equals(Status.CANCELADO))

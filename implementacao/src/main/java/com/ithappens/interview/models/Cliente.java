@@ -1,18 +1,20 @@
 package com.ithappens.interview.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cliente implements Serializable {
@@ -25,5 +27,15 @@ public class Cliente implements Serializable {
 
     @Size(min = 4, max = 40, message = "Nome deve possuir no mínimo 4 e no máximo 40 caracteres")
     private String nome;
+
+    @CPF
+    private String cpf;
+
+    @CNPJ
+    private String cnpj;
+
+    @OneToOne
+    private Pedido pedidoCliente;
+
 
 }
