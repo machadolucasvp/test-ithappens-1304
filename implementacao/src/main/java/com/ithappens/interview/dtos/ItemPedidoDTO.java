@@ -1,5 +1,7 @@
 package com.ithappens.interview.dtos;
 
+
+import com.ithappens.interview.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,18 +11,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdutoDTO  {
+public class ItemPedidoDTO {
 
     private Integer id;
 
-    private String nome;
+    private Status status;
 
-    private String descricao;
+    private Double custoUnitario;
 
-    private String codigoDeBarras;
+    private Integer quantidade;
 
-    private Long sequencial;
-
-    private Double custo;
+    private ProdutoDTO produto;
 
 }

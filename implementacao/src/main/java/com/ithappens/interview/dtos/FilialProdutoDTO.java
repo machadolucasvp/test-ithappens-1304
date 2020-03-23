@@ -1,5 +1,6 @@
 package com.ithappens.interview.dtos;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdutoDTO  {
+public class FilialProdutoDTO {
 
     private Integer id;
 
@@ -22,5 +23,7 @@ public class ProdutoDTO  {
     private Long sequencial;
 
     private Double custo;
+
+    private Integer quantidadeEstoque;
 
 }

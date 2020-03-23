@@ -6,12 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -25,6 +20,6 @@ public class FilialDTO {
     private String nome;
 
     @Builder.Default
-    Set<ProdutoDTO> produtos = new HashSet<>(0);
+    Set<FilialProdutoDTO> produtos = new HashSet<>(0);
 
 }

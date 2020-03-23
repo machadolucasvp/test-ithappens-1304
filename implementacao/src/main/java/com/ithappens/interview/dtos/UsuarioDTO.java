@@ -9,18 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdutoDTO  {
+public class UsuarioDTO {
 
     private Integer id;
 
-    private String nome;
+    private String email;
 
-    private String descricao;
-
-    private String codigoDeBarras;
-
-    private Long sequencial;
-
-    private Double custo;
+    private boolean ativo;
 
 }
