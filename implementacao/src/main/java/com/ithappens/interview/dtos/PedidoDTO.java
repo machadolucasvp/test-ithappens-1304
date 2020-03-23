@@ -31,6 +31,6 @@ public class PedidoDTO {
 
     private Pagamento pagamento;
 
-    private FilialDTO filial;
+    private FilialPedidoDTO filial;
 
 }

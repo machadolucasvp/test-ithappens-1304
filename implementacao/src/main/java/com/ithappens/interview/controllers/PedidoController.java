@@ -1,6 +1,7 @@
 package com.ithappens.interview.controllers;
 
 
+import com.ithappens.interview.dtos.PedidoDTO;
 import com.ithappens.interview.enums.Tipo;
 import com.ithappens.interview.models.Pedido;
 import com.ithappens.interview.services.PedidoService;
@@ -22,6 +23,11 @@ public class PedidoController {
     @GetMapping
     public List<Pedido> getAll() {
         return pedidoService.findAll();
+    }
+
+    @GetMapping("/{pedidoId}")
+    public PedidoDTO getAll(@PathVariable Integer pedidoId) {
+        return pedidoService.asDTO(pedidoService.findById(pedidoId));
     }
 
     @PostMapping

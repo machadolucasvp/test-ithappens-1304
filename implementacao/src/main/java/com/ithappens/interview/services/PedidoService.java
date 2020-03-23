@@ -1,11 +1,9 @@
 package com.ithappens.interview.services;
 
+import com.ithappens.interview.dtos.*;
 import com.ithappens.interview.enums.Status;
 import com.ithappens.interview.enums.Tipo;
-import com.ithappens.interview.models.Filial;
-import com.ithappens.interview.models.ItemPedido;
-import com.ithappens.interview.models.Pedido;
-import com.ithappens.interview.models.Usuario;
+import com.ithappens.interview.models.*;
 import com.ithappens.interview.repositories.ItemPedidoRepository;
 import com.ithappens.interview.repositories.PedidoRepository;
 import org.hibernate.ObjectNotFoundException;
@@ -115,6 +113,52 @@ public class PedidoService {
             pedidoRepository.save(pedido);
             return true;
         }
+    }
+
+    public PedidoDTO asDTO(Pedido pedido) {
+        return PedidoDTO.builder().id(pedido.getId())
+                .nota(pedido.getNota()).tipo(pedido.getTipo())
+                .cliente(clienteAsDTO(pedido.getCliente()))
+                .pagamento(pedido.getPagamento())
+                .usuario(usuarioService.asDTO(pedido.getUsuario()))
+                .filial(filialAsDTO(pedido.getFilial()))
+                .itemsPedido(pedido.getItemsPedido().stream().map(
+                        item -> this.itemPedidoAsDTO(item, this.produtoAsDTO(item.getProduto()))
+                ).collect(Collectors.toSet()))
+                .build();
+    }
+
+    public ItemPedidoDTO itemPedidoAsDTO(ItemPedido itemPedido, ProdutoDTO produtoDTO) {
+        return ItemPedidoDTO.builder().id(itemPedido.getId())
+                .custoUnitario(itemPedido.getCustoUnitario())
+                .quantidade(itemPedido.getQuantidade())
+                .status(itemPedido.getStatus())
+                .produto(produtoDTO).build();
+    }
+
+    public ProdutoDTO produtoAsDTO(Produto produto) {
+        return ProdutoDTO.builder().nome(produto.getNome())
+                .codigoDeBarras(produto.getCodigoDeBarras())
+                .custo(produto.getCusto())
+                .descricao(produto.getDescricao())
+                .id(produto.getId())
+                .sequencial(produto.getSequencial())
+                .build();
+
+    }
+
+    public FilialPedidoDTO filialAsDTO(Filial filial){
+        return FilialPedidoDTO.builder().id(filial.getId())
+                .nome(filial.getNome())
+                .build();
+    }
+
+    ClienteDTO clienteAsDTO(Cliente cliente) {
+        return ClienteDTO.builder().id(cliente.getId())
+                .nome(cliente.getNome())
+                .cnpj(cliente.getCpf())
+                .cpf(cliente.getCnpj())
+                .build();
     }
 
 }

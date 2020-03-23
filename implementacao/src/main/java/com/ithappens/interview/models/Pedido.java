@@ -47,8 +47,13 @@ public class Pedido implements Serializable {
     private Cliente cliente;
 
     @OneToOne
-    @JoinColumn(name="pagamento_id")
+    @JoinColumn(name = "pagamento_id")
     private Pagamento pagamento;
+
+    @OneToOne
+    @JoinColumn
+    @JsonIgnoreProperties("produtos")
+    private Filial filial;
 
     public double calculaCustoTotal() {
         return this.getItemsPedido().stream()

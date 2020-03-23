@@ -1,6 +1,7 @@
 package com.ithappens.interview.services;
 
 import com.ithappens.interview.dtos.FilialDTO;
+import com.ithappens.interview.dtos.FilialProdutoDTO;
 import com.ithappens.interview.dtos.ProdutoDTO;
 import com.ithappens.interview.models.*;
 import com.ithappens.interview.repositories.FilialProdutoRepository;
@@ -37,12 +38,12 @@ public class FilialService {
 
     public FilialDTO asDTO(Filial filial) {
         Integer filialId = filial.getId();
-        Set<ProdutoDTO> produtos = filial.getProdutos().stream().map(
+        Set<FilialProdutoDTO> produtos = filial.getProdutos().stream().map(
                 oldProd -> {
                     Optional<FilialProduto> filialProduto =
                             filialProdutoRepository.findByFilialIdAndProdutoId(filialId, oldProd.getProduto().getId());
 
-                    return new ProdutoDTO(oldProd.getProduto().getId(), oldProd.getProduto().getNome(),
+                    return new FilialProdutoDTO(oldProd.getProduto().getId(), oldProd.getProduto().getNome(),
                             oldProd.getProduto().getDescricao(), oldProd.getProduto().getCodigoDeBarras(),
                             oldProd.getProduto().getSequencial(), oldProd.getProduto().getCusto(), filialProduto.get()
                             .getQuantidadeEstoque());
