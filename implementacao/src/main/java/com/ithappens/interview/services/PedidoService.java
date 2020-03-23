@@ -1,5 +1,6 @@
 package com.ithappens.interview.services;
 
+import com.ithappens.interview.enums.Status;
 import com.ithappens.interview.enums.Tipo;
 import com.ithappens.interview.models.Filial;
 import com.ithappens.interview.models.ItemPedido;
@@ -9,6 +10,7 @@ import com.ithappens.interview.repositories.ItemPedidoRepository;
 import com.ithappens.interview.repositories.PedidoRepository;
 import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -50,7 +52,16 @@ public class PedidoService {
                         filialService.removeProduto(item.getProduto(), filial, item.getQuantidade());
                         return item;
                     } else if (tipo.equals(Tipo.ENTRADA)) {
+
+                        if (pedido.getItemsPedido().size()>0 &&
+                                containsProdutoAndPedidoOpen(pedido, item)) {
+                            throw new DataIntegrityViolationException("Não foi possível realizar a entrada" +
+                                    "do pedido, existem produtos duplicados em status ATIVO ou " +
+                                    "PROCESSANDO");
+                        }
+
                         filialService.addProduto(item.getProduto(), filial, item.getQuantidade());
+                        pedido.getItemsPedido().add(item);
                         return item;
 
                     } else {
@@ -63,6 +74,15 @@ public class PedidoService {
         pedido.setItemsPedido(itemPedidos);
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
+    }
+
+    private boolean containsProdutoAndPedidoOpen(Pedido pedido, ItemPedido itemPedido) {
+        Set<ItemPedido> itemPedidos = pedido.getItemsPedido().stream().filter(
+                item -> item.getProduto().getId().equals(itemPedido.getProduto().getId()) &&
+                        !item.getStatus().equals(Status.CANCELADO)
+        ).collect(Collectors.toSet());
+
+        return itemPedidos.size() > 0;
     }
 
 }
