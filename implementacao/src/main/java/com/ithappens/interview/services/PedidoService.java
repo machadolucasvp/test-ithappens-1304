@@ -9,6 +9,9 @@ import com.ithappens.interview.repositories.PedidoRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
+
     @Autowired
     private PedidoRepository pedidoRepository;
 
@@ -38,16 +42,12 @@ public class PedidoService {
     @Autowired
     private ProdutoService produtoService;
 
-    public List<Pedido> findAll() {
-        return pedidoRepository.findAll();
-    }
-
     public Pedido findById(Integer id) {
         Optional<Pedido> filial = pedidoRepository.findById(id);
         return filial.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
     }
 
-    public void addPedido(Integer filialId, Pedido pedidoDTO, Tipo tipo) {
+    public PedidoDTO addPedido(Integer filialId, Pedido pedidoDTO, Tipo tipo) {
         Filial filial = filialService.findById(filialId);
         Pedido pedido = Pedido.builder().tipo(tipo).filial(filial)
                 .usuario(pedidoDTO.getUsuario())
@@ -87,6 +87,8 @@ public class PedidoService {
         pedido.setItemsPedido(itemPedidos);
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
+
+        return this.asDTO(pedido);
     }
 
     private boolean containsProdutoAndPedidoOpen(Pedido pedido, ItemPedido itemPedido) {
@@ -143,6 +145,21 @@ public class PedidoService {
                 .quantidade(itemPedido.getQuantidade())
                 .status(itemPedido.getStatus())
                 .produto(produtoDTO).build();
+    }
+
+    public Page<PedidoDTO> findPedidosPageable(Integer page, Integer linesPerPage,
+                                               String direction, String orderBy, Integer filialId) {
+        Page<Pedido> pedido;
+        if (filialId > 0) {
+            Filial filial = filialService.findById(filialId);
+
+            pedido = pedidoRepository.findByFilial(filial, PageRequest.of(page, linesPerPage,
+                    Sort.Direction.valueOf(direction), orderBy));
+        } else {
+            pedido = pedidoRepository.findAll(PageRequest.of(page, linesPerPage,
+                    Sort.Direction.valueOf(direction), orderBy));
+        }
+        return pedido.map(this::asDTO);
     }
 
 }
