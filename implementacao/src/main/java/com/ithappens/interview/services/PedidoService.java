@@ -91,18 +91,30 @@ public class PedidoService {
         return itemPedidos.size() > 0;
     }
 
-    public boolean updateItemPedidoStatus(Integer pedidoId, Integer itemId, String status) {
+    public boolean updateItemPedidoStatus(Integer pedidoId, Integer itemId, String status, Boolean isToProcess) {
         Pedido pedido = this.findById(pedidoId);
-        return pedido.getItemsPedido().stream().anyMatch(
-                item -> {
-                    if (item.getId().equals(itemId)) {
-                        item.setStatus(Status.valueOf(status));
-                        pedidoRepository.save(pedido);
-                        return true;
+        if (!isToProcess) {
+            return pedido.getItemsPedido().stream().anyMatch(
+                    item -> {
+                        if (item.getId().equals(itemId)) {
+                            item.setStatus(Status.valueOf(status));
+                            pedidoRepository.save(pedido);
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-        );
+            );
+        } else {
+            Set<ItemPedido> itemsPedidosProcessados = pedido.getItemsPedido().stream().map(
+                    item -> {
+                        item.setStatus(Status.PROCESSADO);
+                        return item;
+                    }
+            ).collect(Collectors.toSet());
+            pedido.setItemsPedido(itemsPedidosProcessados);
+            pedidoRepository.save(pedido);
+            return true;
+        }
     }
 
 }

@@ -27,6 +27,7 @@ public class Filial implements Serializable {
 
     @OneToMany(mappedBy = "filial")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<FilialProduto> produtos = new HashSet<>(0);
 
 }

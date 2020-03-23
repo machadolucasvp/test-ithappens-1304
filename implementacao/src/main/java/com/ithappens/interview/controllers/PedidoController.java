@@ -2,10 +2,7 @@ package com.ithappens.interview.controllers;
 
 
 import com.ithappens.interview.enums.Tipo;
-import com.ithappens.interview.models.Filial;
 import com.ithappens.interview.models.Pedido;
-import com.ithappens.interview.models.Produto;
-import com.ithappens.interview.services.FilialService;
 import com.ithappens.interview.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,6 @@ public class PedidoController {
                                              @RequestParam(value = "filial") Integer filialId,
                                              @RequestBody Pedido pedido) {
         if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
-
             pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
@@ -47,9 +43,11 @@ public class PedidoController {
 
     @PutMapping("/{pedidoId}/item")
     public ResponseEntity<Pedido> updateItemPedidoStatus(@PathVariable Integer pedidoId,
-                                                         @RequestParam(value = "id") Integer itemId,
-                                                         @RequestParam(value = "status", defaultValue = "CANCELADO") String status) {
-        boolean isPresent = pedidoService.updateItemPedidoStatus(pedidoId, itemId, status);
+                                                         @RequestParam(value = "id", required = false) Integer itemId,
+                                                         @RequestParam(value = "status", defaultValue = "CANCELADO") String status,
+                                                         @RequestParam(value = "finalizar", defaultValue = "false") Boolean isToProcess) {
+
+        boolean isPresent = pedidoService.updateItemPedidoStatus(pedidoId, itemId, status, isToProcess);
         if (isPresent) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } else {
