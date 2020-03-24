@@ -21,12 +21,16 @@ public class ClienteService {
         return cliente.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
     }
 
-    ClienteDTO asDTO(Cliente cliente) {
+    public ClienteDTO asDTO(Cliente cliente) {
         return ClienteDTO.builder().id(cliente.getId())
                 .nome(cliente.getNome())
                 .cpf(cliente.getCpf())
                 .cnpj(cliente.getCnpj())
                 .build();
+    }
+
+    public Cliente post(Cliente cliente) {
+        return clienteRepository.save(cliente);
     }
 
 }
