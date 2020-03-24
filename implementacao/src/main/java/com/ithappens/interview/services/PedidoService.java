@@ -150,16 +150,16 @@ public class PedidoService {
                 .produto(produtoDTO).build();
     }
 
-    public Page<PedidoDTO> findPedidosPageable(Integer page, Integer linesPerPage,
+    public Page<PedidoDTO> findPedidosPageable(Integer page, Integer size,
                                                String direction, String orderBy, Integer filialId) {
         Page<Pedido> pedido;
         if (filialId > 0) {
             Filial filial = filialService.findById(filialId);
 
-            pedido = pedidoRepository.findByFilial(filial, PageRequest.of(page, linesPerPage,
+            pedido = pedidoRepository.findByFilial(filial, PageRequest.of(page, size,
                     Sort.Direction.valueOf(direction), orderBy));
         } else {
-            pedido = pedidoRepository.findAll(PageRequest.of(page, linesPerPage,
+            pedido = pedidoRepository.findAll(PageRequest.of(page, size,
                     Sort.Direction.valueOf(direction), orderBy));
         }
         return pedido.map(this::asDTO);

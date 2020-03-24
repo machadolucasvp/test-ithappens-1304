@@ -32,7 +32,7 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoDTO> postPedido(@RequestParam(value = "tipo", defaultValue = "entrada") String tipo,
-                                                @RequestParam(value = "filial") Integer filialId,
+                                                @RequestParam(value = "filialId") Integer filialId,
                                                 @RequestBody Pedido pedido) {
         if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
             try {
@@ -67,11 +67,11 @@ public class PedidoController {
     @GetMapping("/page")
     public Page<PedidoDTO> findPedidosPageable(@RequestParam(value = "filialId", defaultValue = "0") Integer filialId,
                                                @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                               @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+                                               @RequestParam(value = "linesPerPage", defaultValue = "12") Integer size,
                                                @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
                                                @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
 
-        return pedidoService.findPedidosPageable(page, linesPerPage, direction, orderBy, filialId);
+        return pedidoService.findPedidosPageable(page, size, direction, orderBy, filialId);
     }
 
 }

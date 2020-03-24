@@ -1,9 +1,6 @@
 package com.ithappens.interview.services;
 
-import com.ithappens.interview.dtos.FilialDTO;
-import com.ithappens.interview.dtos.FilialPedidoDTO;
-import com.ithappens.interview.dtos.FilialProdutoDTO;
-import com.ithappens.interview.dtos.ProdutoDTO;
+import com.ithappens.interview.dtos.*;
 import com.ithappens.interview.models.*;
 import com.ithappens.interview.repositories.FilialProdutoRepository;
 import com.ithappens.interview.repositories.FilialRepository;
@@ -13,6 +10,9 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,24 +35,6 @@ public class FilialService {
     public Filial findById(Integer id) {
         Optional<Filial> filial = filialRepository.findById(id);
         return filial.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
-    }
-
-    public FilialDTO asDTO(Filial filial) {
-        Integer filialId = filial.getId();
-        Set<FilialProdutoDTO> produtos = filial.getProdutos().stream().map(
-                oldProd -> {
-                    Optional<FilialProduto> filialProduto =
-                            filialProdutoRepository.findByFilialIdAndProdutoId(filialId, oldProd.getProduto().getId());
-
-                    return new FilialProdutoDTO(oldProd.getProduto().getId(), oldProd.getProduto().getNome(),
-                            oldProd.getProduto().getDescricao(), oldProd.getProduto().getCodigoDeBarras(),
-                            oldProd.getProduto().getSequencial(), oldProd.getProduto().getCusto(), filialProduto.get()
-                            .getQuantidadeEstoque());
-                }
-        ).collect(Collectors.toSet());
-
-        return FilialDTO.builder().id(filial.getId()).nome(filial.getNome()).produtos(produtos).build();
-
     }
 
     public void removeProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
@@ -112,10 +94,33 @@ public class FilialService {
         }
     }
 
-    public FilialPedidoDTO filialPedidoAsDTO(Filial filial){
+    public FilialPedidoDTO filialPedidoAsDTO(Filial filial) {
         return FilialPedidoDTO.builder().id(filial.getId())
                 .nome(filial.getNome())
                 .build();
     }
+
+    public Page<FilialProdutoDTO> findFilialProdutosPage(Integer filialId, Integer page, Integer size, String orderBy, String direction) {
+        return filialProdutoRepository.findByFilialId(filialId,
+                PageRequest.of(page, size, Sort.Direction.fromString(orderBy), direction))
+                .map(this::filialProdutoAsDTO);
+    }
+
+    public FilialProdutoDTO filialProdutoAsDTO(FilialProduto filialProduto) {
+        return FilialProdutoDTO.builder().codigoDeBarras(filialProduto.getProduto().getCodigoDeBarras())
+                .custo(filialProduto.getProduto().getCusto())
+                .descricao(filialProduto.getProduto().getDescricao())
+                .id(filialProduto.getProduto().getId())
+                .nome(filialProduto.getProduto().getNome())
+                .sequencial(filialProduto.getQuantidadeEstoque())
+                .quantidadeEstoque(filialProduto.getQuantidadeEstoque())
+                .build();
+    }
+
+    public FilialDTO asDTO(Filial filial) {
+        return FilialDTO.builder().nome(filial.getNome())
+                .id(filial.getId()).build();
+    }
+
 
 }
