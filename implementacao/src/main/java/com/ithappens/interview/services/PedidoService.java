@@ -47,11 +47,13 @@ public class PedidoService {
 
     public PedidoDTO addPedido(Integer filialId, Pedido pedidoDTO, Tipo tipo) {
         Filial filial = filialService.findById(filialId);
+        Usuario usuario = usuarioService.findById(pedidoDTO.getUsuario().getId());
+        Cliente cliente = clienteService.findById(pedidoDTO.getCliente().getId());
         Pedido pedido = Pedido.builder().tipo(tipo).filial(filial)
-                .usuario(pedidoDTO.getUsuario())
+                .usuario(usuario)
                 .observacao(pedidoDTO.getObservacao())
                 .pagamento(pedidoDTO.getPagamento())
-                .cliente(pedidoDTO.getCliente())
+                .cliente(cliente)
                 .build();
 
         Set<ItemPedido> itemPedidos = pedidoDTO.getItemsPedido().stream().map(
@@ -82,11 +84,12 @@ public class PedidoService {
         ).collect(Collectors.toSet());
 
         pedido.setCustoTotal(pedidoDTO.calculaCustoTotal());
+        pedido.getPagamento().setCusto(pedido.getCustoTotal());
         pedido.setItemsPedido(itemPedidos);
-        Pedido storedPedido = pedidoRepository.save(pedido);
+        pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
 
-        return this.asDTO(storedPedido);
+        return this.asDTO(pedido);
     }
 
     private boolean containsProdutoAndPedidoOpen(Pedido pedido, ItemPedido itemPedido) {
@@ -127,6 +130,7 @@ public class PedidoService {
     public PedidoDTO asDTO(Pedido pedido) {
         return PedidoDTO.builder().id(pedido.getId())
                 .observacao(pedido.getObservacao()).tipo(pedido.getTipo())
+                .custoTotal(pedido.getCustoTotal())
                 .pagamento(pedido.getPagamento())
                 .cliente(clienteService.asDTO(pedido.getCliente()))
                 .usuario(usuarioService.asDTO(pedido.getUsuario()))
@@ -141,6 +145,7 @@ public class PedidoService {
         return ItemPedidoDTO.builder().id(itemPedido.getId())
                 .custoUnitario(itemPedido.getCustoUnitario())
                 .quantidade(itemPedido.getQuantidade())
+                .subTotal(itemPedido.getSubTotal())
                 .status(itemPedido.getStatus())
                 .produto(produtoDTO).build();
     }

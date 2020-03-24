@@ -17,6 +17,8 @@ public class ItemPedidoDTO {
 
     private Status status;
 
+    private Double subTotal;
+
     private Double custoUnitario;
 
     private Integer quantidade;

@@ -22,6 +22,8 @@ public class PedidoDTO {
 
     private String observacao;
 
+    private Double custoTotal;
+
     @Builder.Default
     private Set<ItemPedidoDTO> itemsPedido = new HashSet<>();
 
@@ -32,5 +34,6 @@ public class PedidoDTO {
     private Pagamento pagamento;
 
     private FilialPedidoDTO filial;
+
 
 }

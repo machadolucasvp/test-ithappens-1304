@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -22,20 +23,27 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @GetMapping("/{pedidoId}")
-    public PedidoDTO getAll(@PathVariable Integer pedidoId) {
-        return pedidoService.asDTO(pedidoService.findById(pedidoId));
+    public ResponseEntity<PedidoDTO> getAll(@PathVariable Integer pedidoId) {
+        Optional<PedidoDTO> pedido = Optional.of(pedidoService.asDTO(pedidoService.findById(pedidoId)));
+        return pedido.map(pedidoDTO ->
+                ResponseEntity.status(HttpStatus.OK).body(pedidoDTO))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @PostMapping
     public ResponseEntity<PedidoDTO> postPedido(@RequestParam(value = "tipo", defaultValue = "entrada") String tipo,
-                                             @RequestParam(value = "filial") Integer filialId,
-                                             @RequestBody Pedido pedido) {
+                                                @RequestParam(value = "filial") Integer filialId,
+                                                @RequestBody Pedido pedido) {
         if (tipo.equals(Tipo.getValueOf(Tipo.ENTRADA))) {
-            PedidoDTO pedidoDTO = pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
-            return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
+            try {
+                PedidoDTO pedidoDTO = pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
+                return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
+            } catch (Exception exception) {
+                return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+            }
 
         } else if (tipo.equals(Tipo.getValueOf(Tipo.SAIDA))) {
-            PedidoDTO pedidoDTO= pedidoService.addPedido(filialId, pedido, Tipo.SAIDA);
+            PedidoDTO pedidoDTO = pedidoService.addPedido(filialId, pedido, Tipo.SAIDA);
             return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
 
         }
@@ -57,11 +65,11 @@ public class PedidoController {
     }
 
     @GetMapping("/page")
-    public Page<PedidoDTO> findPedidosPageable(@RequestParam(value="filialId", defaultValue="-1") Integer filialId,
-                                @RequestParam(value="page",defaultValue="0")Integer page,
-                                @RequestParam(value="linesPerPage",defaultValue="12")Integer linesPerPage,
-                                @RequestParam(value="orderBy",defaultValue="id")String orderBy,
-                                @RequestParam(value="direction",defaultValue="DESC")String direction) {
+    public Page<PedidoDTO> findPedidosPageable(@RequestParam(value = "filialId", defaultValue = "0") Integer filialId,
+                                               @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                               @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+                                               @RequestParam(value = "orderBy", defaultValue = "id") String orderBy,
+                                               @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
 
         return pedidoService.findPedidosPageable(page, linesPerPage, direction, orderBy, filialId);
     }
