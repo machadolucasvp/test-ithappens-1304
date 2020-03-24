@@ -16,6 +16,15 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    public Optional<Cliente> findByCpfAndCnpj(String cpf, String cnpj) {
+        return clienteRepository.findByCpfAndCnpj(cpf,cnpj);
+    }
+
+    public Optional<Cliente> findByIdAsOptional(Integer id) {
+        return clienteRepository.findById(id);
+    }
+
+
     public Cliente findById(Integer id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));

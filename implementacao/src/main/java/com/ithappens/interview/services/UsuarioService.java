@@ -19,10 +19,6 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
-    }
-
     public Usuario findById(Integer id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         return usuario.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
@@ -36,5 +32,10 @@ public class UsuarioService {
     public Usuario post(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    public Optional<Usuario> findByEmailAsOptional(String email) {
+        return usuarioRepository.findByEmail(email);
+    }
+
 
 }

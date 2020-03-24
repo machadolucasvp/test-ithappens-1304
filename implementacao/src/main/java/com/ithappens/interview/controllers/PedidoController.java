@@ -6,12 +6,12 @@ import com.ithappens.interview.enums.Tipo;
 import com.ithappens.interview.models.Pedido;
 import com.ithappens.interview.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -38,7 +38,7 @@ public class PedidoController {
             try {
                 PedidoDTO pedidoDTO = pedidoService.addPedido(filialId, pedido, Tipo.ENTRADA);
                 return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
-            } catch (Exception exception) {
+            } catch (DataIntegrityViolationException exception) {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
             }
 

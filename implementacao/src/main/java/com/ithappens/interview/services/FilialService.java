@@ -32,6 +32,10 @@ public class FilialService {
     @Autowired
     ProdutoRepository produtoRepository;
 
+    public Optional<Filial> findByIdAsOptional(Integer id) {
+        return filialRepository.findById(id);
+    }
+
     public Filial findById(Integer id) {
         Optional<Filial> filial = filialRepository.findById(id);
         return filial.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
