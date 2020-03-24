@@ -38,8 +38,4 @@ public class Cliente implements Serializable {
     @Column(unique = true)
     private String cnpj;
 
-    @OneToMany
-    @Builder.Default
-    private Set<Pedido> pedidoCliente = new HashSet<>();
-
 }

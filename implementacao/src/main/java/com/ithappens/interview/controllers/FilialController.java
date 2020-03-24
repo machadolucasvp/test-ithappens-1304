@@ -46,7 +46,7 @@ public class FilialController {
         if (existentFilial.isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(filialService.asDTO(filial));
+            return ResponseEntity.status(HttpStatus.CREATED).body(filialService.asDTO(filialService.post(filial)));
 
         }
     }

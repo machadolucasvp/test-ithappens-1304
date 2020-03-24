@@ -15,10 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class FilialService {
@@ -39,6 +36,10 @@ public class FilialService {
     public Filial findById(Integer id) {
         Optional<Filial> filial = filialRepository.findById(id);
         return filial.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
+    }
+
+    public Filial post(Filial filial){
+        return filialRepository.save(filial);
     }
 
     public void removeProduto(Produto produto, Filial filial, Integer quantidadeProdutos) {
