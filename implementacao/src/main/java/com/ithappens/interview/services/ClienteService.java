@@ -17,7 +17,7 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public Optional<Cliente> findByCpfAndCnpj(String cpf, String cnpj) {
-        return clienteRepository.findByCpfAndCnpj(cpf,cnpj);
+        return clienteRepository.findByCpfAndCnpj(cpf, cnpj);
     }
 
     public Optional<Cliente> findByIdAsOptional(Integer id) {

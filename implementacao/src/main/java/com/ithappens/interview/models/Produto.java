@@ -30,10 +30,10 @@ public class Produto implements Serializable {
     private String descricao;
 
     @NotEmpty
-    @Column(unique=true)
+    @Column(unique = true)
     private String codigoDeBarras;
 
-    @Column(unique=true)
+    @Column(unique = true)
     private Integer sequencial;
 
     private Double custo;

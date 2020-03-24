@@ -33,11 +33,11 @@ public class FilialProduto implements Serializable {
 
     private Integer quantidadeEstoque;
 
-    public void addEstoque(Integer quantidade){
+    public void addEstoque(Integer quantidade) {
         this.quantidadeEstoque += quantidade;
     }
 
-    public void removeEstoque(Integer quantidade){
+    public void removeEstoque(Integer quantidade) {
         this.quantidadeEstoque -= quantidade;
     }
 

@@ -28,7 +28,7 @@ public class Usuario implements Serializable {
     private String nome;
 
     @Email
-    @Column(unique=true)
+    @Column(unique = true)
     @NotEmpty(message = "Email não deve ser vazio")
     private String email;
 
