@@ -11,6 +11,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -34,8 +36,9 @@ public class Cliente implements Serializable {
     @CNPJ
     private String cnpj;
 
-    @OneToOne
-    private Pedido pedidoCliente;
+    @OneToMany
+    @Builder.Default
+    private Set<Pedido> pedidoCliente = new HashSet<>();
 
 
 }

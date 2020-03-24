@@ -41,7 +41,7 @@ public class Pedido implements Serializable {
     @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("pedidoCliente")
     private Cliente cliente;
