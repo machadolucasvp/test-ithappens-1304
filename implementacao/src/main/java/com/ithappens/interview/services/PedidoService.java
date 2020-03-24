@@ -14,8 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,7 +49,7 @@ public class PedidoService {
         Filial filial = filialService.findById(filialId);
         Pedido pedido = Pedido.builder().tipo(tipo).filial(filial)
                 .usuario(pedidoDTO.getUsuario())
-                .nota(pedidoDTO.getNota())
+                .observacao(pedidoDTO.getObservacao())
                 .pagamento(pedidoDTO.getPagamento())
                 .cliente(pedidoDTO.getCliente())
                 .build();
@@ -85,10 +83,10 @@ public class PedidoService {
 
         pedido.setCustoTotal(pedidoDTO.calculaCustoTotal());
         pedido.setItemsPedido(itemPedidos);
-        pedidoRepository.save(pedido);
+        Pedido storedPedido = pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
 
-        return this.asDTO(pedido);
+        return this.asDTO(storedPedido);
     }
 
     private boolean containsProdutoAndPedidoOpen(Pedido pedido, ItemPedido itemPedido) {
@@ -128,7 +126,7 @@ public class PedidoService {
 
     public PedidoDTO asDTO(Pedido pedido) {
         return PedidoDTO.builder().id(pedido.getId())
-                .nota(pedido.getNota()).tipo(pedido.getTipo())
+                .observacao(pedido.getObservacao()).tipo(pedido.getTipo())
                 .pagamento(pedido.getPagamento())
                 .cliente(clienteService.asDTO(pedido.getCliente()))
                 .usuario(usuarioService.asDTO(pedido.getUsuario()))

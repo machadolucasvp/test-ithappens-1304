@@ -27,7 +27,7 @@ public class Pedido implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private Tipo tipo;
 
-    private String nota;
+    private String observacao;
 
     private Double custoTotal;
 

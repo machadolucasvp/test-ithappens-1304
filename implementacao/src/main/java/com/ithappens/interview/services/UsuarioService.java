@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Service
 public class UsuarioService {
+
     @Autowired
     private UsuarioRepository usuarioRepository;
 
@@ -23,7 +24,6 @@ public class UsuarioService {
     }
 
     public Usuario findById(Integer id) {
-
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         return usuario.orElseThrow(() -> new ObjectNotFoundException(id, this.getClass().getName()));
     }
@@ -32,4 +32,5 @@ public class UsuarioService {
         return UsuarioDTO.builder().ativo(usuario.isAtivo())
                 .id(usuario.getId()).email(usuario.getEmail()).build();
     }
+
 }

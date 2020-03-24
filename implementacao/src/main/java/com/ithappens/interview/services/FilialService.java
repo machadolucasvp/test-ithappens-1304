@@ -118,7 +118,4 @@ public class FilialService {
                 .build();
     }
 
-    public List<Filial> findAll() {
-        return filialRepository.findAll();
-    }
 }

@@ -59,9 +59,9 @@ public class PedidoController {
     @GetMapping("/page")
     public Page<PedidoDTO> findPedidosPageable(@RequestParam(value="filialId", defaultValue="-1") Integer filialId,
                                 @RequestParam(value="page",defaultValue="0")Integer page,
-                                @RequestParam(value="linesPerPage",defaultValue="24")Integer linesPerPage,
-                                @RequestParam(value="orderBy",defaultValue="nome")String orderBy,
-                                @RequestParam(value="direction",defaultValue="ASC")String direction) {
+                                @RequestParam(value="linesPerPage",defaultValue="12")Integer linesPerPage,
+                                @RequestParam(value="orderBy",defaultValue="id")String orderBy,
+                                @RequestParam(value="direction",defaultValue="DESC")String direction) {
 
         return pedidoService.findPedidosPageable(page, linesPerPage, direction, orderBy, filialId);
     }

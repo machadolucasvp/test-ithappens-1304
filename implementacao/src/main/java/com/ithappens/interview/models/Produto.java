@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,9 +29,12 @@ public class Produto implements Serializable {
 
     private String descricao;
 
+    @NotEmpty
+    @Column(unique=true)
     private String codigoDeBarras;
 
-    private Long sequencial;
+    @Column(unique=true)
+    private Integer sequencial;
 
     private Double custo;
 

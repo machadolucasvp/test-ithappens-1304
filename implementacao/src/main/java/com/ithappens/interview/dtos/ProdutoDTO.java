@@ -19,7 +19,7 @@ public class ProdutoDTO  {
 
     private String codigoDeBarras;
 
-    private Long sequencial;
+    private Integer sequencial;
 
     private Double custo;
 

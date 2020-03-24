@@ -20,7 +20,7 @@ public class PedidoDTO {
 
     private Tipo tipo;
 
-    private String nota;
+    private String observacao;
 
     @Builder.Default
     private Set<ItemPedidoDTO> itemsPedido = new HashSet<>();
