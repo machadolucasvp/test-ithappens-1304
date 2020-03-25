@@ -1,0 +1,516 @@
+FORMAT: 1A
+HOST: https://localhost:8080
+
+# ItHappens Interview
+
+Esta documentação drescreve a API desenvolvida ao longo do desafio de entrevista proposto pela ItHappens.
+
+A ItHappens Interview API representa o funcionamento de um sistema de entrada e saída de estoque.
+
+Nome: `Lucas Machado`
+
+Email: `lucasvufma@gmail.com` ou `lucas.machado@lsdi.ufma.br`
+
+- Não utiliza Autorização e Autenticação 
+- Não possui navegação por HATEOAS
+- Aceita apenas`JSON`
+
+> **Nota**: Todos os snippets apresentados não podem ser executados diretamente pelo documento pois a aplicação não se encontra deployed assim como também não se encontra com o CORS configurado, 
+portanto, para fornecer uma maior **interação em conjunto à documentação**, criei uma coleção com estes snippets permitindo assim a sua interação, 
+segue o link: [**POSTMAN**](https://www.getpostman.com/collections/58e2e9bdc63e998d611e)
+
+> **Nota**: A notação para parametros de requisição no **APIARY** é diferente da usual, para varios paramêtros estes são agrupados para uma única cláusula ? e encapsulados em uma mesma chave {}. Exemplo: `produto/item?id={id}&nome={nome}` é equivalente à `produto/item?{id,nome}`. 
+
+## Group Pedidos
+Endpoint responsável pelas requisições do contexto de **Pedido**
+
+## Get Pedido [/pedidos/{pedidoId}]
+
+Retorna um **Pedido** identificado pelo seu `ìd`
+
+### Retrieve a Pedido [GET]
+
++ Parameters
+    + pedidoId (number) - Identificador do Pedido
+
++ Response 200 (application/json)
+
+            {
+               "id":1,
+               "tipo":"SAIDA",
+               "observacao":"Entregar no deposito 40",
+               "itemsPedido":[
+                  {
+                     "id":1,
+                     "status":"PROCESSADO",
+                     "custoUnitario":2.0,
+                     "quantidade":40,
+                     "produto":{
+                        "id":1,
+                        "nome":"Coca-Cola",
+                        "descricao":"Refrigerante de 2 litros. Referido popularmente como coca, é o refrigerante preferido pela população mundial",
+                        "codigoDeBarras":"123456789012555444332221568754456745",
+                        "sequencial":1,
+                        "custo":5.5
+                     }
+                  }
+               ],
+               "usuario":{
+                  "id":1,
+                  "email":"lucasvufma@gmail.com",
+                  "ativo":true
+               },
+               "cliente":{
+                  "id":1,
+                  "nome":"Lucas Vinicius Pereira Machado",
+                  "cpf":"51494649020",
+                  "cnpj":null
+               },
+               "pagamento":{
+                  "forma":"cartao",
+                  "id":1,
+                  "custo":2.0,
+                  "numeroDeParcelas":2,
+                  "numeroDoCartao":123123
+               },
+               "filial":{
+                  "id":1,
+                  "nome":"Renascença"
+               }
+            }
++ Response 404 (application/json)
+
+
+## Pageable Pedido [/pedido/page?{filialId,orderBy,page,size,direction}]
+
+Retorna uma **Page** do tipo **Pedido**, recebe 5 paramêtros, sendo eles: `filialId`, `page`, `size`
+, `orderBy` e `direction`.
+
+Se a requisição for feita sem o paramêtro `filialId` será retornado uma **Page** de todos os pedidos na base, limitados por cada 
+`page` pela quantidade `size`. O paramêtro`orderBy`define o atributo de ordenação e `direction` a ordem. 
+
+Caso a requisição receba o `filialId`, também retornara uma **Page** porém apenas com os pedidos referente à **Filial** que possui o identificador `filialId`.
+
+### Retrieave a Page of Pedido [GET]
+
++ Parameters
+    + filialId (optional, number) - Identificador da Filial 
+    + orderBy (optional, string) - Nome do atributo à ser definido como caratér de ordenação, defaultValue=id
+    + page (optional, number) - Número da página requerida, defaultValue=0
+    + size (optional, number) - Quantidade de pedidos à serem requisitados em cada página, defaultValue=12
+    + direction (optional, string) - ASC ou DESC, indica a ordem, defaultValue=DESC
+    
++ Response 200 (application/json)
+
+            {
+                "content": [
+                    {
+                        "id": 1,
+                        "tipo": "SAIDA",
+                        "observacao": "Entregar no deposito 40",
+                        "itemsPedido": [
+                            {
+                                "id": 1,
+                                "status": "PROCESSADO",
+                                "custoUnitario": 2.0,
+                                "quantidade": 40,
+                                "produto": {
+                                    "id": 1,
+                                    "nome": "Coca-Cola",
+                                    "descricao": "Refrigerante de 2 litros. Referido popularmente como coca, é o refrigerante preferido pela população mundial",
+                                    "codigoDeBarras": "123456789012555444332221568754456745",
+                                    "sequencial": 1,
+                                    "custo": 5.5
+                                }
+                            }
+                        ],
+                        "usuario": {
+                            "id": 1,
+                            "email": "lucasvufma@gmail.com",
+                            "ativo": true
+                        },
+                        "cliente": {
+                            "id": 1,
+                            "nome": "Lucas Vinicius Pereira Machado",
+                            "cpf": "51494649020",
+                            "cnpj": null
+                        },
+                        "pagamento": {
+                            "forma": "cartao",
+                            "id": 1,
+                            "custo": 2.0,
+                            "numeroDeParcelas": 2,
+                            "numeroDoCartao": 123123
+                        },
+                        "filial": {
+                            "id": 1,
+                            "nome": "Renascença"
+                        }
+                    }
+                ],
+                "pageable": {
+                    "sort": {
+                        "sorted": true,
+                        "unsorted": false,
+                        "empty": false
+                    },
+                    "offset": 0,
+                    "pageNumber": 0,
+                    "pageSize": 12,
+                    "paged": true,
+                    "unpaged": false
+                },
+                "totalPages": 1,
+                "totalElements": 1,
+                "last": true,
+                "size": 12,
+                "number": 0,
+                "sort": {
+                    "sorted": true,
+                    "unsorted": false,
+                    "empty": false
+                },
+                "first": true,
+                "numberOfElements": 1,
+                "empty": false
+            }
+
+
+
+## Create a Pedido [/pedido?{filialId,tipo}]
+
+Responsável por criar um **Pedido** em determinada **Filial**, recebe dois paramêtros `tipo` e `filialId`. 
+
+O paramêtro `tipo` pode receber `entrada` ou `saída` e `filialId` deve receber o identificador da **Filial** que está sendo realizado o pedido.
+
+O **Pedido** será rejeitado se existir itens com status de `ATIVO` ou `PROCESSADO` contendo o mesmo produto
+ou se para pedidos de tipo `saida`, a **Filial** requerida não possuir estoque suficiente.
+
+### Add Pedido [POST]
+
++ Parameters
+    + filialId (number) - Identificador da filial que está sendo realizado o pedido
+    + tipo (optional, string) - entrada ou saida, indica o tipo de pedido a ser realizado, defaultValue=entrada
+   
+
++ Request (application/json)
+
+            {
+               "observacao":"Entregar no galpão 8 para João",
+               "custoTotal":null,
+               "itemsPedido":[
+                  {
+                     "id":1,
+                     "status":"ATIVO",
+                     "custoUnitario":2.0,
+                     "subTotal":null,
+                     "quantidade":40,
+                     "produto":{
+                        "id":1,
+                        "nome":"Coca-Cola",
+                        "descricao":"Refrigerante de 2 litros. Referido popularmente como coca, é o refrigerante preferido pela população mundial",
+                        "codigoDeBarras":"123456789012555444332221568754456745",
+                        "sequencial":1,
+                        "custo":5.5
+                     }
+                  },
+                  {
+                     "id":2,
+                     "status":"ATIVO",
+                     "custoUnitario":2.0,
+                     "subTotal":null,
+                     "quantidade":40,
+                     "produto":{
+                        "id":3,
+                        "nome":"Banana",
+                        "descricao":"Cacho de banana prata",
+                        "codigoDeBarras":"923456789012551444332221568754456741",
+                        "sequencial":4,
+                        "custo":7.50
+                     }
+                  }
+               ],
+               "usuario":{
+                  "id":1
+               },
+               "cliente":{
+                  "id":1
+               },
+               "pagamento":{
+                  "forma":"cartao",
+                  "id":1,
+                  "custo":2.0,
+                  "numeroDeParcelas":2,
+                  "numeroDoCartao":123123
+               },
+               "filial":{
+                  "id":1
+               }
+            }
+
++ Response 201 (application/json)
+
+           {
+               "id":2,
+               "tipo":"ENTRADA",
+               "observacao":"Entregar no galpão 8 para João",
+               "custoTotal":160.0,
+               "itemsPedido":[
+                  {
+                     "id":4,
+                     "status":"ATIVO",
+                     "subTotal":80.0,
+                     "custoUnitario":2.0,
+                     "quantidade":40,
+                     "produto":{
+                        "id":3,
+                        "nome":"Banana",
+                        "descricao":"Cacho de banana prata",
+                        "codigoDeBarras":"923456789012551444332221568754456741",
+                        "sequencial":4,
+                        "custo":7.5
+                     }
+                  },
+                  {
+                     "id":3,
+                     "status":"ATIVO",
+                     "subTotal":80.0,
+                     "custoUnitario":2.0,
+                     "quantidade":40,
+                     "produto":{
+                        "id":1,
+                        "nome":"Coca-Cola",
+                        "descricao":"Refrigerante de 2 litros. Referido popularmente como coca, é o refrigerante preferido pela população mundial",
+                        "codigoDeBarras":"123456789012555444332221568754456745",
+                        "sequencial":1,
+                        "custo":5.5
+                     }
+                  }
+               ],
+               "usuario":{
+                  "id":1,
+                  "email":"lucasvufma@gmail.com",
+                  "ativo":true
+               },
+               "cliente":{
+                  "id":1,
+                  "nome":"Lucas Vinicius Pereira Machado",
+                  "cpf":"51494649020",
+                  "cnpj":null
+               },
+               "pagamento":{
+                  "forma":"cartao",
+                  "id":1,
+                  "custo":160.0,
+                  "numeroDeParcelas":2,
+                  "numeroDoCartao":123123
+               },
+               "filial":{
+                  "id":1,
+                  "nome":"Renascença"
+               }
+            }
+
++ Response 422 (application/json)
+
+## Update a Pedido [/pedido/{pedidoId}/item?{id,pedidoId,status,finalizar}]
+
+Realiza ações de atualização em determinado **Pedido**, recebe `pedidoId`, `id`, `status` e `finalizar`. 
+
+A variavel de caminho `pedidoId` deve receber o identificador do **Pedido** a ser atualizado. 
+A ação disparada por este endpoint é controlada pelo paramêtro `finalizar`,
+se este for `true`, ele alterará o `status` de todos os itens no pedido identificado por `pedidoId` para `PROCESSADO`, caso contrário uma vez fornecido
+o identificador `id`, este realizara a alteração do `status` fornecido para o item identificado por tal identificador.
+
+Para melhor compreensão, tal endpoint contempla as seguinte sintuações:
+
+- Determinado **Item** do **Pedido** precisa ser cancelado
+- **Pedido** é finalizado e seus itens precisam ter seu **Status** alterado para **PROCESSADO**
+
+### Update Pedido [PUT]
+
++ Parameters
+    + pedidoId (number) - Identificador do Pedido.
+    + id (optional, number) - Identificador do Item do Pedido.
+    + status (optional, string) - status do pedido, pode assumir: CANCELADO, PROCESSADO ou ATIVO. defaultValue=CANCELADO
+    + finalizar (optional, boolean) - Se true irá alterar o status de todos os itens para PROCESSADO
+
++ Request (application/json)
+
++ Response 204
+
++ Response 400
+    
+## Group Filial
+Endpoint responsável para pelas requisições do contexto de  **Filial**.
+
+## Retrieve Produtos from a Filial [/filial/{filialId}/produtos?{page,orderBy,size,direction}]
+
+Retorna uma **Page** de Produtos pertencens a **Filial** identificada pela variavel de caminho
+`filial_id`.
+
+Semelhantemente a requisição **Pageable Pedido** já apresentada, aceita 4 paramêtros, sendo eles `page`, `size`, `direction` e `orderBy`.
+
+### Retrieve Pageable Produtos from a Filial [GET]
+
++ Parameters
+    + filialId (optional, number) - Identificador da Filial 
+    + orderBy (optional, string) - Nome do atributo à ser definido como caratér de ordenação, defaultValue=id
+    + page (optional, number) - Número da página requerida, defaultValue=0
+    + size (optional, number) - Quantidade de pedidos à serem requisitados em cada página, defaultValue=12
+    + direction (optional, string) - ASC ou DESC, indica a ordem, defaultValue=DESC
+    
++ Response 201 (application/json)
+
+            {
+                "content": [
+                    {
+                        "id": 1,
+                        "nome": "Coca-Cola",
+                        "descricao": "Refrigerante de 2 litros. Referido popularmente como coca, é o refrigerante preferido pela população mundial",
+                        "codigoDeBarras": "123456789012555444332221568754456745",
+                        "sequencial": 1,
+                        "custo": 5.5,
+                        "quantidadeEstoque": 1
+                    }
+                ],
+                "pageable": {
+                    "sort": {
+                        "sorted": true,
+                        "unsorted": false,
+                        "empty": false
+                    },
+                    "offset": 0,
+                    "pageNumber": 0,
+                    "pageSize": 12,
+                    "paged": true,
+                    "unpaged": false
+                },
+                "totalPages": 1,
+                "totalElements": 1,
+                "last": true,
+                "size": 12,
+                "number": 0,
+                "sort": {
+                    "sorted": true,
+                    "unsorted": false,
+                    "empty": false
+                },
+                "first": true,
+                "numberOfElements": 1,
+                "empty": false
+            }
+
++ Response 404
+
+## Create a Filial [/filial]
+
+### Create Filial [POST]
+
++ Request (application/json)
+
+            {
+                "id": 3,
+                "nome": "Cohatrac"
+            }
+
++ Response 201 
+
+            {
+                "id": 3,
+                "nome": "Cohatrac"
+            }
+            
++ Response 404
+
+## Group Cliente
+
+## Create a Cliente [/cliente]
+
+O `cpf` ou `cnpj` devem ser valídos
+
+### Create Cliente [POST]
+
++ Request (application/json)
+
+            {
+                "id": 2,
+                "nome": "Lucas Vinicius Pereira Machado",
+                "cpf": "60908095350",
+                "cnpj": null
+            }
+
++ Response 201
+
+            {
+                "id": 2,
+                "nome": "Lucas Vinicius Pereira Machado",
+                "cpf": "60908095350",
+                "cnpj": null
+            }
+
++ Response 404
+
+## Retrieve a Cliente [/cliente/{clienteId}]
+
+### Retrieve a Cliente [GET]
+
++ parameter
+    + clienteId (number) - Identificador do cliente buscado
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "nome": "Lucas Vinicius Pereira Machado",
+                "cpf": "51494649020",
+                "cnpj": null
+            }
+
++ Response 404
+
+## Group Usuário
+
+## Create a Usuário [/usuario]
+
+Como a API não conta com Autorização e Autenticação, o campo `senha` do **Usuário** não está sendo armazenado 
+com criptografia.
+
+O`nome` de **Usuário** deve ter entre 4 a 40 caracteres assim como, `email` deve ser valído e único e `password` não pode estar vazia em quaisquer dos casos citados a API irá rejeitar a requisição
+
+### Create Cliente [POST]
+
++ Request (application/json)
+
+            {
+                "nome": "Albert Einstein",
+                "email": "einstein@gmail.com",
+                "password": "relatividade"
+            }
+
++ Response 201
+
+            {
+                "id": 2,
+                "email": "einstein@gmail.com",
+                "ativo": true
+            }
+            
++ Response 404
+
+## Retrieve a Usuario [/usuario/{usuarioId}]
+
+### Retrieve Usuario [GET]
+
++ parameter
+    + usuarioId (number) - Identificador do usuário buscado
+
++ Response 200 (application/json)
+
+            {
+                "id":1,
+                "email":"lucasvufma@gmail.com",
+                "ativo":true
+            }
+
++ Response 404
