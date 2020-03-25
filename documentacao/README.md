@@ -33,9 +33,9 @@ A API desenvolvida durante o desafio foi toda documentada utilizando a plataform
 
 ## Modelagem do Banco de Dados
 
-Segue o modelo relacional do banco:
+A aplicação atualmente ta mapeando para este banco de dados:
 
-![database](https://user-images.githubusercontent.com/44952113/77487254-c7de7b00-6e10-11ea-8166-b14462ab05c1.png)
+![bdmodeloAtual](https://user-images.githubusercontent.com/44952113/77496679-48f63c00-6e2a-11ea-8f37-53de3668450d.png)
 
 
 1. Escrever uma consulta que retorne todos os produtos com quantidade maior ou iguala 100
