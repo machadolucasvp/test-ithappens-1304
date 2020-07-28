@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    image: ithappens/estoque
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:10.4
+    environment:
+      - POSTGRES_DB=destoque
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
