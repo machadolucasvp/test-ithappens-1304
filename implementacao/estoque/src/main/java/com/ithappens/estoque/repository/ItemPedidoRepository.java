@@ -16,4 +16,10 @@ public interface ItemPedidoRepository extends JpaRepository<ItemPedido,Long> {
 
     @Query("select itp from ItemPedido itp where itp.pedidoEstoque.id=:pedidoEstoqueId and itp.statusPedido.id =1")
     List<ItemPedido>findAllByPedidoEstoqueWithStatusPedidoAtivo(Long pedidoEstoqueId);
+
+    @Query("select itp from ItemPedido itp where itp.pedidoEstoque.id=:pedidoEstoqueId and itp.statusPedido.id =2")
+    List<ItemPedido>findAllByPedidoEstoqueWithStatusPedidoCancelado(Long pedidoEstoqueId);
+
+    @Query("select itp from ItemPedido itp where itp.pedidoEstoque.id=:pedidoEstoqueId and itp.statusPedido.id =3")
+    List<ItemPedido>findAllByPedidoEstoqueWithStatusPedidoProcessado(Long pedidoEstoqueId);
 }
