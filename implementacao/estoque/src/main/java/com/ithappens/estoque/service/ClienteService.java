@@ -17,18 +17,19 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public Cliente alterar(Long id, Cliente cliente){
-        if(id == null){
+    public Cliente alterar(Cliente cliente){
+        if(cliente.getId() == null){
             throw new ServiceException("Id do Cliente não informado");
-        }else{
-            return clienteRepository.findById(id).map(clienteSalvo -> {
-                if(!cliente.getCpf().equals(clienteSalvo.getCpf())) verificaCPFValido(cliente.getCpf());
-
-                return clienteRepository.save(cliente);
-
-            }).orElseThrow(()->new ServiceException("Cliente com id " + id + " inexistente"));
-
         }
+        return clienteRepository.findById(cliente.getId()).map(clienteSalvo -> {
+            if(!cliente.getCpf().equals(clienteSalvo.getCpf())) verificaCPFValido(cliente.getCpf());
+
+
+            return clienteRepository.save(cliente);
+
+        }).orElseThrow(()->new ServiceException("Cliente com id " + cliente.getId() + " inexistente"));
+
+
     }
 
     public Cliente buscaPorId(Long id){

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,27 +27,28 @@ public class ClienteServiceTest {
     Cliente cliente;
 
     @BeforeEach
-    void init(){ cliente = Cliente.builder().id(1L).cpf("29266976008").nome("Maria").build(); }
+    void init(){ cliente = Cliente.builder().id(1L).cpf("29266976008").nome("Hermione").build(); }
 
     @Test
     void aoSalvar_RetornarClienteSalvo(){
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
-        Cliente novoCliente = clienteService.salvar(Cliente.builder().cpf("292.669.760-08").nome("Maria").build());
+        Cliente novoCliente = clienteService.salvar(Cliente.builder().cpf("292.669.760-08").nome("Hermione").build());
 
         assertEquals(cliente.getId(), novoCliente.getId());
     }
 
     @Test
     void aoAlterarCliente_RetornarDadosAtualizados(){
-        Cliente clienteAtualizado = Cliente.builder().nome("Maria Dias").cpf("29266976008").build();
+        Cliente clienteNovosDados = Cliente.builder().id(1L).nome("Hermione Granger").cpf("29266976008").build();
 
         when(clienteRepository.findById(any(Long.class))).thenReturn(Optional.of(cliente));
-        when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
+        when(clienteRepository.save(any(Cliente.class))).thenReturn(clienteNovosDados);
 
-        clienteService.alterar(1L, clienteAtualizado);
+        Cliente clienteAtualizado = clienteService.alterar(clienteNovosDados);
 
-        assertEquals(cliente.getNome(), clienteAtualizado.getNome());
+        assertEquals(clienteAtualizado.getId(),clienteNovosDados.getId());
+        assertEquals(clienteAtualizado.getNome(), clienteNovosDados.getNome());
     }
 
     @Test
