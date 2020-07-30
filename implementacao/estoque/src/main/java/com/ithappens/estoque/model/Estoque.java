@@ -1,10 +1,13 @@
 package com.ithappens.estoque.model;
 
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Min;
 
+@Data
 @Entity
 @Table(name="ES01_ESTOQUE")
 @SequenceGenerator(

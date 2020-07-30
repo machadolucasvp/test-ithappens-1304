@@ -1,8 +1,11 @@
 package com.ithappens.estoque.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@Data
 @Entity
 @Table(name="ES05_TIPO_PEDIDO")
 @SequenceGenerator(

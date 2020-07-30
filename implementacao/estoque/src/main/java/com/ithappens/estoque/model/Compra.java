@@ -1,8 +1,11 @@
 package com.ithappens.estoque.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "ES09_COMPRA")
 @SequenceGenerator(
