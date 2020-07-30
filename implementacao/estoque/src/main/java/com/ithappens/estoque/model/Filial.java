@@ -1,12 +1,14 @@
 package com.ithappens.estoque.model;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Data
+@Builder
 @Entity
 @Table(name = "ES10_FILIAL")
 @SequenceGenerator(
