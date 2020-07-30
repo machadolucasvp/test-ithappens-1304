@@ -36,6 +36,10 @@ public class ClienteService {
         return clienteRepository.findById(id).orElseThrow(()-> new ServiceException("Cliente com id " + id + " inexistente"));
     }
 
+    public Cliente buscaPorCPF(String cpf){
+        return clienteRepository.findByCpf(cpf).orElseThrow(()-> new ServiceException("Cliente com cpf " + cpf + " inexistente"));
+    }
+
     private void verificaCPFValido(String cpf){
         if(clienteRepository.findByCpf(cpf).isPresent()){
             throw new ServiceException("CPF já cadastrado");

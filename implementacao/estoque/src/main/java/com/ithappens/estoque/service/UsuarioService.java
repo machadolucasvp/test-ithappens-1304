@@ -1,6 +1,7 @@
 package com.ithappens.estoque.service;
 
 import com.ithappens.estoque.exception.ServiceException;
+import com.ithappens.estoque.model.Cliente;
 import com.ithappens.estoque.model.Usuario;
 import com.ithappens.estoque.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
@@ -22,18 +23,22 @@ public class UsuarioService {
 
     public Usuario alterar(Usuario usuario){
         if(usuario.getId()==null) {
-            throw new ServiceException("Id do Cliente não foi informado");
+            throw new ServiceException("Id do Usuário não foi informado");
         }
         return usuarioRepository.findById(usuario.getId()).map(usuarioSalvo -> {
             if(!usuario.getCpf().equals(usuarioSalvo.getCpf())) verificaCPFValido(usuario.getCpf());
 
             return usuarioRepository.save(usuario);
-        }).orElseThrow(()->new ServiceException("Cliente com id "+ usuario.getId() + " inexistente"));
+        }).orElseThrow(()->new ServiceException("Usuário com id "+ usuario.getId() + " inexistente"));
 
     }
 
     public Usuario buscaPorId(Long id){
-        return usuarioRepository.findById(id).orElseThrow(()->new ServiceException("Cliente com id "+ id + " inexistente"));
+        return usuarioRepository.findById(id).orElseThrow(()->new ServiceException("Usuário com id "+ id + " inexistente"));
+    }
+
+    public Usuario buscaPorCPF(String cpf){
+        return usuarioRepository.findByCpf(cpf).orElseThrow(()-> new ServiceException("Usuário com cpf " + cpf + " inexistente"));
     }
 
     private void verificaCPFValido(String cpf){
