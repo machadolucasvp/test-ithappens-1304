@@ -39,11 +39,11 @@ public class EstoqueService {
     }
 
     public List <Estoque> buscaPorFilial(Long filialId){
-        return estoqueRepository.findByFilial(filialId).stream().collect(Collectors.toList());
+        return new ArrayList<>(estoqueRepository.findByFilial(filialId));
     }
 
     public List <Estoque> buscaPorProduto(Long produtoId){
-        return estoqueRepository.findByProduto(produtoId).stream().collect(Collectors.toList());
+        return new ArrayList<>(estoqueRepository.findByProduto(produtoId));
     }
 
     private void verificaEstoqueExistente(Long filialId, Long produtoId){

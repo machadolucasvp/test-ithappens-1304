@@ -21,4 +21,5 @@ public interface PedidoEstoqueRepository extends JpaRepository<PedidoEstoque, Lo
 
     @Query("select ped from PedidoEstoque ped where ped.tipoPedido.id = 2")
     List<PedidoEstoque>findAllByTipoPedidoSaida();
+
 }
