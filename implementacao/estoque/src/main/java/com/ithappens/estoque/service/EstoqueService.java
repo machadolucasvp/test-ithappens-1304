@@ -2,8 +2,6 @@ package com.ithappens.estoque.service;
 
 import com.ithappens.estoque.exception.ServiceException;
 import com.ithappens.estoque.model.Estoque;
-import com.ithappens.estoque.model.Filial;
-import com.ithappens.estoque.model.Produto;
 import com.ithappens.estoque.repository.EstoqueRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

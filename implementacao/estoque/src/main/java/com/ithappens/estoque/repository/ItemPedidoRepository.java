@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido,Long> {
 
@@ -25,4 +26,9 @@ public interface ItemPedidoRepository extends JpaRepository<ItemPedido,Long> {
 
     @Query("delete from ItemPedido itp where itp.pedidoEstoque.id =: pedidoEstoqueId")
     void deletePorPedidoEstoque(Long pedidoEstoqueId);
+
+    @Query("select itp from ItemPedido itp where itp.pedidoEstoque.id=:pedidoEstoqueId and itp.produto.id=:produtoId")
+    Optional<ItemPedido> findByPedidoEstoqueAndProduto(Long pedidoEstoqueId, Long produtoId);
+
+
 }
