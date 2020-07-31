@@ -30,8 +30,6 @@ public class ClienteController {
     private final ClienteService clienteService;
     private final ClienteRepository clienteRepository;
 
-
-
     @GetMapping("/clientes")
     @ApiOperation(value = "Retorna os clientes cadastrados")
     public ResponseEntity<List<Cliente>> buscarTodos(){

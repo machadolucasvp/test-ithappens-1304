@@ -12,13 +12,13 @@ public interface EntradaEstoqueRepository extends JpaRepository<EntradaEstoque,L
 
     EntradaEstoque findById(long id);
 
-    @Query("select ent from EntradaEstoque ent where ent.pedidoEstoque.filial.id =: filialId")
+    @Query("select ent from EntradaEstoque ent where ent.pedidoEstoque.filial.id =:filialId")
     List<EntradaEstoque> findByFilial(Long filialId);
 
-    @Query("select ent from EntradaEstoque ent where ent.pedidoEstoque.id =: pedidoEstoqueId")
+    @Query("select ent from EntradaEstoque ent where ent.pedidoEstoque.id =:pedidoEstoqueId")
     Optional<EntradaEstoque> findByPedidoEstoque(Long pedidoEstoqueId);
 
-    @Query("select ent from EntradaEstoque  ent where  ent.usuario.cpf =: usuarioCpf")
+    @Query("select ent from EntradaEstoque  ent where  ent.usuario.cpf =:usuarioCpf")
     Optional<EntradaEstoque> findByUsuarioCpf(String usuarioCpf);
 
     @Query("select ent from EntradaEstoque ent where ent.usuario.id=:usuarioId")

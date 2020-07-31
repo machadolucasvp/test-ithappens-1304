@@ -10,10 +10,10 @@ public interface PedidoEstoqueRepository extends JpaRepository<PedidoEstoque, Lo
 
     PedidoEstoque findById(long id);
 
-    @Query("select ped from PedidoEstoque ped where ped.tipoPedido.id =: tipoPedidoId")
+    @Query("select ped from PedidoEstoque ped where ped.tipoPedido.id =:tipoPedidoId")
     List<PedidoEstoque>findAllByTipoPedido(Long tipoPedidoId);
 
-    @Query("select ped from PedidoEstoque ped where ped.filial.id =: filialId")
+    @Query("select ped from PedidoEstoque ped where ped.filial.id =:filialId")
     List<PedidoEstoque>findAllByFilial(Long filialId);
 
     @Query("select ped from PedidoEstoque ped where ped.tipoPedido.id = 1")

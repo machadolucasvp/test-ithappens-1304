@@ -10,6 +10,6 @@ public interface FilialRepository extends JpaRepository<Filial,Long> {
 
     Filial findById(long id);
 
-    @Query("select fil from Filial fil where trim(upper(fil.descricao)) =: descricao ")
+    @Query("select fil from Filial fil where trim(upper(fil.descricao)) =trim(upper(:descricao)) ")
     Optional<Filial> findByDescricao(String descricao);
 }

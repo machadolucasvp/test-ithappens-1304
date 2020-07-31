@@ -10,7 +10,7 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento,L
 
     FormaPagamento findById(long id);
 
-    @Query("select fpg from FormaPagamento fpg where trim(upper(fpg.descricao)) =: descricao ")
+    @Query("select fpg from FormaPagamento fpg where trim(upper(fpg.descricao)) =trim(upper(:descricao)) ")
     Optional<FormaPagamento> findByDescricao(String descricao);
 
 }

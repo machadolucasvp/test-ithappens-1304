@@ -11,10 +11,10 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
 
     Produto findById(long id);
 
-    @Query("select prd from Produto prd where trim(upper(prd.cdgBarras)) =: cdgBarras ")
+    @Query("select prd from Produto prd where trim(upper(prd.cdgBarras)) =trim(upper(:cdgBarras) ) ")
     Optional<Produto> findByCdgBarras(String cdgBarras);
 
-    @Query("select prd from Produto prd where trim(upper(prd.descricao))=:descricao")
+    @Query("select prd from Produto prd where trim(upper(prd.descricao))=trim(upper(:descricao) )")
     Optional<Produto>findByDescricao(String descricao);
 
     @Query("select prd.valor from Produto prd where prd.id=:id")

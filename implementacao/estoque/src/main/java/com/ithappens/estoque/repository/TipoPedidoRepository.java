@@ -10,6 +10,6 @@ public interface TipoPedidoRepository extends JpaRepository<TipoPedido,Long> {
 
     TipoPedido findById(long id);
 
-    @Query("select tpd from TipoPedido tpd where trim(upper(tpd.descricao) )=:descricao ")
+    @Query("select tpd from TipoPedido tpd where trim(upper(tpd.descricao) )=trim(upper(:descricao) ) ")
     Optional<TipoPedido>findByDescricao(String descricao);
 }
