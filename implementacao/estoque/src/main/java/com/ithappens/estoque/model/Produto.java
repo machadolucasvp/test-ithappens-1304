@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 
 @Data
@@ -33,7 +34,7 @@ public class Produto {
     @Column(name="ES04_DESCRICAO")
     private String descricao;
 
-    @NotBlank(message = "O valor do produto deve ser informado")
+    @Min(value=1)
     @Column(name="ES04_VALOR")
     private BigDecimal valor;
 }
