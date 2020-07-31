@@ -44,6 +44,10 @@ public class EstoqueService {
         return new ArrayList<>(estoqueRepository.findByProduto(produtoId));
     }
 
+    public Estoque buscaPorFilialEProduto(Long filialId, Long produtoId){
+        return estoqueRepository.findByFilialAndProduto(filialId,produtoId).get();
+    }
+
     private void verificaEstoqueExistente(Long filialId, Long produtoId){
         if (estoqueRepository.findByFilialAndProduto(filialId,produtoId).isPresent()){
             throw new ServiceException("Já existe um estoque cadastrado para esse produto nessa filial");

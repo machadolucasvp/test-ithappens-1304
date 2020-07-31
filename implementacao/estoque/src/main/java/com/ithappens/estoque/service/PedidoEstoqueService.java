@@ -5,6 +5,7 @@ import com.ithappens.estoque.model.ItemPedido;
 import com.ithappens.estoque.model.PedidoEstoque;
 import com.ithappens.estoque.repository.ItemPedidoRepository;
 import com.ithappens.estoque.repository.PedidoEstoqueRepository;
+import com.ithappens.estoque.repository.TipoPedidoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class PedidoEstoqueService {
         }
     }
 
-    public void excluirPedidoEstoque(Long pedidoEstoqueId){
+    public void deletePedidoEstoque(Long pedidoEstoqueId){
         PedidoEstoque ped = buscaPorId(pedidoEstoqueId);
         if(Optional.ofNullable(ped).isPresent()){
             itemPedidoRepository.deletePorPedidoEstoque(pedidoEstoqueId);

@@ -19,4 +19,6 @@ public interface EstoqueRepository extends JpaRepository<Estoque,Long> {
 
     @Query("select etq from Estoque etq where etq.filial.id =: filialId and etq.produto.id =: produtoId")
     Optional<Estoque> findByFilialAndProduto(Long filialId, Long produtoId);
+
+
 }
