@@ -3,6 +3,8 @@ package com.ithappens.estoque.service;
 import com.ithappens.estoque.exception.ServiceException;
 import com.ithappens.estoque.model.Cliente;
 import com.ithappens.estoque.model.Usuario;
+import com.ithappens.estoque.repository.CompraRepository;
+import com.ithappens.estoque.repository.EntradaEstoqueRepository;
 import com.ithappens.estoque.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import javax.sql.rowset.serial.SerialException;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final CompraRepository compraRepository;
+    private final EntradaEstoqueRepository entradaEstoqueRepository;
 
     public Usuario salvar(Usuario usuario){
         verificaSenhaValida(usuario.getSenha());
@@ -31,6 +35,16 @@ public class UsuarioService {
             return usuarioRepository.save(usuario);
         }).orElseThrow(()->new ServiceException("Usuário com id "+ usuario.getId() + " inexistente"));
 
+    }
+
+    public void deletar(Long id){
+        Usuario usuario = buscaPorId(id);
+
+        if(!compraRepository.findByUsuarioId(id).isEmpty() || !entradaEstoqueRepository.findByUsuarioId(id).isEmpty()){
+            throw new ServiceException("Existem operações de entrada e/ou saída registradas para esse usuário. Exclua as operações associadas a ele para que possa deletá-lo.");
+        }else{
+            usuarioRepository.delete(usuario);
+        }
     }
 
     public Usuario buscaPorId(Long id){

@@ -1,5 +1,6 @@
 package com.ithappens.estoque.repository;
 
+import com.ithappens.estoque.model.Compra;
 import com.ithappens.estoque.model.EntradaEstoque;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,7 @@ public interface EntradaEstoqueRepository extends JpaRepository<EntradaEstoque,L
 
     @Query("select ent from EntradaEstoque  ent where  ent.usuario.cpf =: usuarioCpf")
     Optional<EntradaEstoque> findByUsuarioCpf(String usuarioCpf);
+
+    @Query("select ent from EntradaEstoque ent where ent.usuario.id=:usuarioId")
+    List<EntradaEstoque>findByUsuarioId(Long usuarioId);
 }

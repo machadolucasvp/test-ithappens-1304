@@ -2,7 +2,6 @@ package com.ithappens.estoque.controller;
 
 import com.ithappens.estoque.model.Cliente;
 import com.ithappens.estoque.repository.ClienteRepository;
-import com.ithappens.estoque.repository.CompraRepository;
 import com.ithappens.estoque.service.ClienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.*;
@@ -32,7 +29,7 @@ public class ClienteController {
 
     private final ClienteService clienteService;
     private final ClienteRepository clienteRepository;
-    private final CompraRepository compraRepository;
+
 
 
     @GetMapping("/clientes")
@@ -48,7 +45,7 @@ public class ClienteController {
     }
 
     @GetMapping("/clienteId/{id}")
-    @ApiOperation(value = "Busca um único cliente por id")
+    @ApiOperation(value = "Busca um cliente por id")
     public ResponseEntity<Cliente> buscaPorId(@PathVariable Long id){
         return ok(clienteService.buscaPorId(id));
     }

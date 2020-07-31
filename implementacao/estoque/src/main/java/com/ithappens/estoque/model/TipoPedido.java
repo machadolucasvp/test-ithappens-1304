@@ -1,11 +1,15 @@
 package com.ithappens.estoque.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="ES05_TIPO_PEDIDO")
 @SequenceGenerator(

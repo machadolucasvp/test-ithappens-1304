@@ -1,7 +1,9 @@
 package com.ithappens.estoque.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="ES03_ITEM_PEDIDO")
 @SequenceGenerator(

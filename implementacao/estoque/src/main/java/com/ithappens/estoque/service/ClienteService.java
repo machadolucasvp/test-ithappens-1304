@@ -38,7 +38,7 @@ public class ClienteService {
         Cliente cliente = buscaPorId(id);
 
         if(!compraRepository.findByClienteId(cliente.getId()).isEmpty()){
-            throw new ServiceException("Existem compras (operações de saída) registradas para esse cliente. Exclua as compras para que possa excluir o cliente.");
+            throw new ServiceException("Existem compras (operações de saída) registradas para esse cliente. Exclua as compras associadas a ele para que possa deletá-lo.");
         }else{
             clienteRepository.delete(cliente);
         }
