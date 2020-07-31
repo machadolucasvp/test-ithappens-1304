@@ -62,7 +62,7 @@ public class PedidoEstoqueService {
         return new ArrayList<>(pedidoEstoqueRepository.findAllByTipoPedidoSaida());
     }
 
-    public List<ItemPedido> buscaTodosItensDoPedidoEsotque(Long pedidoEstoqueId){
+    public List<ItemPedido> buscaTodosItensDoPedidoEstoque(Long pedidoEstoqueId){
         return new ArrayList<>(itemPedidoRepository.findByPedidoEstoque(pedidoEstoqueId));
     }
 
