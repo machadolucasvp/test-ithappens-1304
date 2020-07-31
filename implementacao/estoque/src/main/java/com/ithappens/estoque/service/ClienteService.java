@@ -2,7 +2,9 @@ package com.ithappens.estoque.service;
 
 import com.ithappens.estoque.exception.ServiceException;
 import com.ithappens.estoque.model.Cliente;
+import com.ithappens.estoque.model.Compra;
 import com.ithappens.estoque.repository.ClienteRepository;
+import com.ithappens.estoque.repository.CompraRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final CompraRepository compraRepository;
 
     public Cliente salvar(Cliente cliente){
         verificaCPFValido(cliente.getCpf());
@@ -29,7 +32,16 @@ public class ClienteService {
 
         }).orElseThrow(()->new ServiceException("Cliente com id " + cliente.getId() + " inexistente"));
 
+    }
 
+    public void deletar(Long id){
+        Cliente cliente = buscaPorId(id);
+
+        if(!compraRepository.findByClienteId(cliente.getId()).isEmpty()){
+            throw new ServiceException("Existem compras (operações de saída) registradas para esse cliente. Exclua as compras para que possa excluir o cliente.");
+        }else{
+            clienteRepository.delete(cliente);
+        }
     }
 
     public Cliente buscaPorId(Long id){
@@ -45,6 +57,8 @@ public class ClienteService {
             throw new ServiceException("CPF já cadastrado");
         }
     }
+
+
 
 
 }

@@ -1,7 +1,9 @@
 package com.ithappens.estoque.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="ES12_CLIENTE")
 @SequenceGenerator(

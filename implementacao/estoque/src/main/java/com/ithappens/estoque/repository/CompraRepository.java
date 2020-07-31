@@ -23,4 +23,7 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
     @Query("select cmp from Compra cmp where cmp.cliente.cpf=: clienteCpf")
     List<Compra> findByClienteCpf(String clienteCpf);
 
+    @Query("select cmp from Compra cmp where cmp.cliente.id=:clienteId")
+    List<Compra>findByClienteId(Long clienteId);
+
 }

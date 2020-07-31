@@ -22,7 +22,7 @@ public class SwaggerConfig {
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.ithappens.estoque"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(metaInfo());
@@ -34,11 +34,11 @@ public class SwaggerConfig {
                 "Estoque ItHappens",
                 "Aplicação de Gerenciamento de Estoque ItHappens.",
                 "1.0",
-                "Terms of Service",
+                null,
                 new Contact("Francinette Borges", "https://francinetteborges.wordpress.com/",
                         "francinette.borges@gmail.com"),
-                "Apache License Version 2.0",
-                "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()
+                null,
+                null, new ArrayList<VendorExtension>()
         );
 
         return apiInfo;
