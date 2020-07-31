@@ -4,6 +4,7 @@ import com.ithappens.estoque.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 public interface ProdutoRepository extends JpaRepository<Produto,Long> {
@@ -15,4 +16,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
 
     @Query("select prd from Produto prd where trim(upper(prd.descricao))=:descricao")
     Optional<Produto>findByDescricao(String descricao);
+
+    @Query("select prd.valor from Produto prd where prd.id=:id")
+    Optional<BigDecimal> findValorByProdutoId(Long id);
 }
